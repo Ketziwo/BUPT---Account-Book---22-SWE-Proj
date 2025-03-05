@@ -1,13 +1,28 @@
+# 0 前言 - 如何部署本项目？
+
+## 1 安装maven
+
+- Apache Maven 是一个软件项目管理和综合工具。基于项目对象模型 (POM) 的概念，Maven 可以从一个中心信息源管理项目的构建、报告和文档。  
+
+- maven官网下载链接：https://maven.apache.org/download.cgi  
+
+具体流程可见：【一小时Maven教程】 https://www.bilibili.com/video/BV1uApMeWErY/?p=3&share_source=copy_web&vd_source=9fdf279c769c4839dbb45b8625a6f4cf
+
+## 2 部署git
+- 安装 git，按照教程走，在git bash里登录账号和邮箱
+- 找个空文件夹执行命令： git clone https://github.com/Ketziwo/BUPT---Account-Book---22-SWE-Proj 
+- 用IDE打开运行
+
 # 1 项目结构
 
 工程目录设计，采用分层架构便于维护和扩展：
 
 ```
-finance-app/
+BUPT---Account-Book---22-SWE-Proj/
 ├── src/
 │   ├── main/
 │   │   ├── java/
-│   │   │   └── financeapp/
+│   │   │   └── cn/edu/bupt/
 │   │   │       ├── model/             # 数据模型
 │   │   │       │   └── Transaction.java
 │   │   │       │
@@ -42,10 +57,8 @@ finance-app/
 │   │
 │   └── test/                    # 单元测试
 │       └── java/
-│           └── com/
-│               └── yourcompany/
-│                   └── financeapp/
-│                       └── test/
+│           └── cn/edu/bupt/
+│                          └── test/
 ├── data/                       # 数据存储目录
 │   └── transactions.csv
 └── pom.xml                    # Maven依赖配置
