@@ -25,6 +25,7 @@ BUPT---Account-Book---22-SWE-Proj/
 │   │   │   └── cn/edu/bupt/
 │   │   │       ├── model/             # 数据模型
 │   │   │       │   └── Transaction.java
+│   │   │       │   └── Tag.java
 │   │   │       │
 │   │   │       ├── dao/               # 数据存取 （Data Access Object，数据访问对象）
 │   │   │       │   ├── TransactionDao.java

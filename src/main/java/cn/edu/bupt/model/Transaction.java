@@ -1,20 +1,7 @@
 package cn.edu.bupt.model;
 
 import cn.edu.bupt.utils.DateUtils;
-
-/*
- * 交易货币3位代码
- */
-enum Currency {
-    CNY,USD;
-}
-
-/*
- * 收入或支出类型
- */
-enum TransactionType {
-    INCOME,EXPENSE;
-}
+import java.util.ArrayList;
 
 public class Transaction {
     private static String lastDate = DateUtils.getDate();
@@ -25,10 +12,11 @@ public class Transaction {
     private int amount;             // 交易金额 单位为分
     private Currency currency;      // 交易货币，默认CNY，3字母货币代码
     private TransactionType type;   // 收入或支出类型
-    private String category;        // 分类：餐饮、娱乐等
-    private String source;          // 交易渠道（微信支付/现金/银行卡等）
+    private Category category;      // 分类：餐饮、娱乐等
+    private Source source;          // 交易渠道（微信支付/现金/银行卡等）
     private String description;     // 交易详情描述（自由文本）
-    private String tags;            // 用户自定义标签
+    private ArrayList<Tag> tags= new ArrayList<Tag>();    
+                                    // 用户自定义标签
     private String created_at;      // 交易创建时间
     private String modified_at;     // 最后修改时间
 
@@ -46,9 +34,7 @@ public class Transaction {
         this.modified_at = modified_at;
     }
     public Transaction() {
-        this.transaction_id = lastDate + '-' + num++;
-        this.created_at = DateUtils.getDatetime();
-        this.modified_at = created_at;
+        this(lastDate + '-' + num++, DateUtils.getDatetime(), DateUtils.getDatetime());
     }
     public String getTransaction_id() {return transaction_id;}
 
@@ -62,14 +48,55 @@ public class Transaction {
      * @param c 交易货币，默认CNY
      */
     public void setCurrency(Currency c) {currency = c;}
-    public Currency getCurrency(){return currency;}
+    public Currency getCurrency() {return currency;}
     
     /**
      * @param t 交易类型
      */
     public void setType(TransactionType t) {type = t;}
-    public TransactionType getType(){return type;}
+    public TransactionType getType() {return type;}
 
-    public 
+    /**
+     * @param c 分类
+     */
+    public void setCategory(Category c) {category = c;}
+    public Category getCategory() {return category;}
 
+    /**
+     * @param s 交易来源
+     */
+    public void setSource(Source s) {source = s;}
+    public Source getSource() {return source;}
+
+    /**
+     * @param d 交易用户自定义描述
+     */
+    public void setDescription(String d) {description = d;}
+    public String getDescription() {return description;}
+
+    public void addTag(String n) {
+        Tag t = Tag.findTag(n);
+        if(t == null) {
+            t = new Tag(n); 
+        }
+        t.addToTag(this);
+        tags.add(t);
+    }
+    public int removeTag(String n) {
+        Tag t = Tag.findTag(n);
+        if(t == null) {
+            return 0;
+        }
+        for(int i=0; i<tags.size()-1; ++i) {
+            if(tags.get(i) == t) {
+                tags.remove(i);
+                t.removeFromTag(this);
+                return 1;
+            }
+        }
+        return 0;
+    }
+    public ArrayList<Tag> getTags() {
+        return tags;
+    }
 }
