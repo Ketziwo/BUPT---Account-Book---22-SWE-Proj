@@ -27,7 +27,7 @@ enum Category {
  * 交易来源
  */
 enum Source {
-    WECHAT;
+    USER, WECHAT;
 }
 
 public class Tag {

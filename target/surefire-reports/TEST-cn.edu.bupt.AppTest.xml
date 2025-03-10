@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="cn.edu.bupt.AppTest" time="0.035" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="cn.edu.bupt.AppTest" time="0.033" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="22"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="GBK"/>
-    <property name="java.class.path" value="c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\test-classes;c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\classes;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.0\junit-jupiter-api-5.11.0.jar;C:\Users\Dovep\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Dovep\.m2\repository\org\junit\platform\junit-platform-commons\1.11.0\junit-platform-commons-1.11.0.jar;C:\Users\Dovep\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.0\junit-jupiter-params-5.11.0.jar;"/>
+    <property name="java.class.path" value="c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\test-classes;c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\classes;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.0\junit-jupiter-api-5.11.0.jar;C:\Users\Dovep\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Dovep\.m2\repository\org\junit\platform\junit-platform-commons\1.11.0\junit-platform-commons-1.11.0.jar;C:\Users\Dovep\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.0\junit-jupiter-params-5.11.0.jar;C:\Users\Dovep\.m2\repository\org\apache\commons\commons-csv\1.10.0\commons-csv-1.10.0.jar;"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
@@ -15,9 +15,9 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="CN"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-22\bin"/>
-    <property name="sun.java.command" value="C:\Users\Dovep\AppData\Local\Temp\surefire8501531041287228517\surefirebooter-20250306233109169_3.jar C:\Users\Dovep\AppData\Local\Temp\surefire8501531041287228517 2025-03-06T23-31-09_070-jvmRun1 surefire-20250306233109169_1tmp surefire_0-20250306233109169_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Dovep\AppData\Local\Temp\surefire8090365457932092335\surefirebooter-20250310212029948_3.jar C:\Users\Dovep\AppData\Local\Temp\surefire8090365457932092335 2025-03-10T21-20-29_851-jvmRun1 surefire-20250310212029948_1tmp surefire_0-20250310212029948_2tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\test-classes;c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\classes;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.0\junit-jupiter-api-5.11.0.jar;C:\Users\Dovep\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Dovep\.m2\repository\org\junit\platform\junit-platform-commons\1.11.0\junit-platform-commons-1.11.0.jar;C:\Users\Dovep\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.0\junit-jupiter-params-5.11.0.jar;"/>
+    <property name="surefire.test.class.path" value="c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\test-classes;c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\classes;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.0\junit-jupiter-api-5.11.0.jar;C:\Users\Dovep\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Dovep\.m2\repository\org\junit\platform\junit-platform-commons\1.11.0\junit-platform-commons-1.11.0.jar;C:\Users\Dovep\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.0\junit-jupiter-params-5.11.0.jar;C:\Users\Dovep\.m2\repository\org\apache\commons\commons-csv\1.10.0\commons-csv-1.10.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\Dovep"/>
     <property name="user.language" value="zh"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Dovep\AppData\Local\Temp\surefire8501531041287228517\surefirebooter-20250306233109169_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Dovep\AppData\Local\Temp\surefire8090365457932092335\surefirebooter-20250310212029948_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="22.0.2+9-70"/>
@@ -58,9 +58,9 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="66.0"/>
   </properties>
-  <testcase name="shouldAnswerWithTrue" classname="cn.edu.bupt.AppTest" time="0.021">
+  <testcase name="shouldAnswerWithTrue" classname="cn.edu.bupt.AppTest" time="0.019">
     <system-out><![CDATA[Hello
-1
+2025-03-10 21:20:30
 ]]></system-out>
   </testcase>
 </testsuite>

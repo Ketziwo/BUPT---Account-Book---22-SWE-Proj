@@ -1,7 +1,9 @@
 package cn.edu.bupt;
 
-import cn.edu.bupt.utils.DateUtils;
-import cn.edu.bupt.model.*;
+import cn.edu.bupt.dao.CsvTransactionDao;
+import cn.edu.bupt.model.Transaction;
+
+import java.util.ArrayList;
 
 /*
  * maven自动生成的
@@ -17,15 +19,11 @@ public class AppTest {
     public void shouldAnswerWithTrue() {
         System.out.println("Hello");
 
-        Transaction y = new Transaction();
-        Transaction x = new Transaction();
-        x.addTag("wx");
-        x.addTag("apple");
-        y.addTag("wx");
-        x.removeTag("wx");
-        x.removeTag("wx");
-        System.out.println(x.getTags().size());
+        Transaction x = new Transaction("111", "111", "111");
 
-        
+        System.out.println(x.getCreateTime());
+
+        // ArrayList<String> a = CsvTransactionDao.readCsv();
+        // System.out.println(a.get(0));
     }
 }

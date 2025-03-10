@@ -2,6 +2,7 @@ package cn.edu.bupt.model;
 
 import cn.edu.bupt.utils.DateUtils;
 import java.util.ArrayList;
+import java.util.regex.*;
 
 public class Transaction {
     private static String lastDate = DateUtils.getDate();
@@ -28,10 +29,37 @@ public class Transaction {
      * @param create_time 交易创建时间
      * @param modified_time 最后修改时间
      */
-    public Transaction(String tid, String create_at, String modified_at) {
-        this.transaction_id = tid;
-        this.created_at = create_at;
-        this.modified_at = modified_at;
+    public Transaction(String tid, String datetime, int amount, Currency currency, TransactionType type, Category category, Source source, String description, ArrayList<Tag> tags, String created_at, String modified_at) {
+        String tidPattern = "^\\d{8}-\\d+$";
+        String datetimwPattern = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) ([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$";
+        if(Pattern.matches(tidPattern, tid)) {
+            this.transaction_id = tid;
+        }
+        else {
+            this.transaction_id = lastDate + '-' + num++;
+        }
+
+        this.datetime = datetime;
+        this.amount = amount;
+        this.currency = currency==null?Currency.CNY:currency;
+        this.type = type==null?TransactionType.EXPENSE:type;
+        this.category = category==null?Category.FOODS:category;
+        this.source = source==null?Source.USER:source;
+        this.description = description;
+        this.tags = tags==null?new ArrayList<Tag>():tags;
+
+        if (Pattern.matches(datetimwPattern, created_at) && Pattern.matches(datetimwPattern, modified_at)) {
+            this.created_at = created_at;
+            this.modified_at = modified_at;
+        }
+        else {
+            this.created_at = DateUtils.getDatetime();
+            this.modified_at = DateUtils.getDatetime();
+        }
+    }
+    
+    public Transaction(String tid, String created_at, String modified_at) {
+        this(tid,null,0,Currency.CNY,TransactionType.EXPENSE,Category.FOODS,Source.USER,null,null,created_at,modified_at);
     }
     public Transaction() {
         this(lastDate + '-' + num++, DateUtils.getDatetime(), DateUtils.getDatetime());
@@ -98,5 +126,13 @@ public class Transaction {
     }
     public ArrayList<Tag> getTags() {
         return tags;
+    }
+
+    public String getCreateTime() {
+        return created_at;
+    }
+
+    public String getModifiedTime() {
+        return modified_at;
     }
 }
