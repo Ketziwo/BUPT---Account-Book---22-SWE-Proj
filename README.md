@@ -24,6 +24,7 @@ BUPT---Account-Book---22-SWE-Proj/
 │   │   ├── java/
 │   │   │   └── cn/edu/bupt/
 │   │   │       ├── model/             # 数据模型
+│   │   │       │   └── TransactionManager.java
 │   │   │       │   └── Transaction.java
 │   │   │       │   └── Tag.java
 │   │   │       │
@@ -152,9 +153,9 @@ BUPT---Account-Book---22-SWE-Proj/
 建议在`data/transactions.csv`文件中按以下字段结构存储：
 
 ```csv
-transaction_id,datetime,amount,currency,transaction_type,category,source,description,tags,created_at,modified_at
-20230901-001,2023-09-01T12:30:00,128.50,CNY,EXPENSE,餐饮,微信支付,星巴克下午茶,咖啡;工作餐,2023-09-01T13:00:00,2023-09-01T13:00:00
-20230902-002,2023-09-02T19:45:00,5000.00,CNY,INCOME,工资,银行转账,九月工资,,2023-09-02T20:00:00,2023-09-02T20:00:00
+transaction_id,amount,datetime,created_at,modified_at,description,tags
+20230901-001,12850,2023-09-01 12:30:00,2023-09-01 13:00:00,2023-09-01 13:00:00,工作餐
+20230902-002,500000,2023-09-02 19:45:00,2023-09-02 20:00:00,2023-09-02 20:00:00，九月工资
 ```
 
 ### 二、字段说明

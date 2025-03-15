@@ -1,60 +1,37 @@
 package cn.edu.bupt.model;
 
-import java.util.ArrayList;
-
+/**
+ * Tag
+ */
 public class Tag {
-    private static ArrayList<Tag> allTagList = new ArrayList<Tag>();
 
-    public static Tag findTag(String n) {
-        for(int i = 0; i < allTagList.size()-1; ++i) {
-            if(allTagList.get(i).name == n) {
-                return allTagList.get(i);
-            }
-        }
-        return null;
-    }
+    private static TransactionManager TM = TransactionManager.getInstance();
 
-    private String name;
-    private ArrayList<Transaction> trans;
+    private final String name;
 
-    /**
-     * Tag构造函数，禁止重名，将本tag存入总tag表。
-     * @param n tag名字
-     */
-    public Tag(String n) {
-        this.trans = new ArrayList<Transaction>();
-        if(findTag(n) == null) {
-            this.name = n;
-            allTagList.add(this);
+    public Tag(String name) {
+        if(!TM.Tags.contains(name)) {
+            this.name = name;
+            TM.Tags.add(this);
+            TM.tagRegistry.put(name, this);
         }
         else {
+            this.name = "";
         }
     }
 
-    public String getName() {
-        return name;
+    public String getName() { return name; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tag)) return false;
+        return name.equals(((Tag) o).name);
     }
 
-    public void addToTag(Transaction t) {
-        trans.add(t);
-        
-    }
-    public void removeFromTag(Transaction t) {
-        for(int i=0; i<trans.size()-1; ++i) {
-            if(trans.get(i) == t) {
-                trans.remove(i);
-                break;
-            }
-        }
-        if(trans.size() == 0) {
-            for(int i=0; i<allTagList.size()-1; ++i) {
-                if(allTagList.get(i) == this) {
-                    allTagList.remove(i);
-                    return;
-                }
-            }
-        }
-        return;
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }
 

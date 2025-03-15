@@ -7,6 +7,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale.Category;
+
+import javax.xml.transform.Source;
 
 import cn.edu.bupt.model.*;
 
@@ -16,7 +20,7 @@ public final class CsvTransactionDao {
      /**
      * BufferedReader 读取
      */
-    public static ArrayList<String> readCSV() {
+    public static ArrayList<String> readCSV(File file) {
         try
 		{
 			ArrayList<String> data = new ArrayList<>();//list of lists to store data
@@ -40,12 +44,13 @@ public final class CsvTransactionDao {
 		}
         return null;
     }
+	public static ArrayList<String> readCSV(){return readCSV(file);} 
 
 	public static void readTransactionsFromCSV() {
 		ArrayList<String> csv = readCSV();
 		if(csv == null)return;
 
-		//transaction_id,datetime,amount,currency,transaction_type,category,source,description,tags,created_at,modified_at
+		// transaction_id,amount,datetime,created_at,modified_at,description,tags
 
 		for(int i=1; i<csv.size(); ++i) {
 			String line = csv.get(i);
@@ -59,12 +64,6 @@ public final class CsvTransactionDao {
 			right++;
 			left = right;
 
-			// 读取交易时间
-			while(right<size && line.charAt(right) != ',') {right++;}
-			String datetime = line.substring(left, right);
-			right++;
-			left = right;
-
 			// 读取交易金额
 			while(right<size && line.charAt(right) != ',') {right++;}
 			int amount = 0;
@@ -74,59 +73,9 @@ public final class CsvTransactionDao {
 			right++;
 			left = right;
 
-			// 读取币种
+			// 读取交易时间
 			while(right<size && line.charAt(right) != ',') {right++;}
-			Currency currency;
-			switch(line.substring(left, right)) {
-				case "CNY": currency = Currency.CNY;break; 
-				case "USD": currency = Currency.USD;break;
-				default:	currency = Currency.CNY;break;
-			}
-			right++;
-			left = right;
-
-			// 读取交易类型
-			while(right<size && line.charAt(right) != ',') {right++;}
-			TransactionType type;
-			switch(line.substring(left, right)) {
-				case "EXPENSE": type = TransactionType.EXPENSE;break; 
-				case "INCOME": 	type = TransactionType.INCOME;break;
-				default: 		type = TransactionType.EXPENSE;break;
-			}
-			right++;
-			left = right;
-
-			// 读取分类
-			while(right<size && line.charAt(right) != ',') {right++;}
-			Category category;
-			switch(line.substring(left, right)) {
-				case "DFT": 	category = Category.DFT;break;
-				case "FOODS": 	category = Category.FOODS;break; 
-				default: 		category = Category.DFT;break;
-			}
-			right++;
-			left = right;
-
-			// 读取交易来源
-			while(right<size && line.charAt(right) != ',') {right++;}
-			Source source;
-			switch(line.substring(left, right)) {
-				case "USER": 	source = Source.USER;break; 
-				case "WECHAT":	source = Source.WECHAT;break;
-				default: 		source = Source.USER;break;
-			}
-			right++;
-			left = right;
-
-			// 读取描述
-			while(right<size && line.charAt(right) != ',') {right++;}
-			String description = line.substring(left, right);
-			right++;
-			left = right;
-
-			// 读取tag
-			while(right<size && line.charAt(right) != ',') {right++;}
-			String tags = line.substring(left, right);
+			String datetime = line.substring(left, right);
 			right++;
 			left = right;
 
@@ -139,62 +88,56 @@ public final class CsvTransactionDao {
 			// 读取修改时间
 			while(right<size && line.charAt(right) != ',') {right++;}
 			String modified_at = line.substring(left, right);
+			right++;
+			left = right;
 
-			new Transaction(tid, datetime, amount, currency, type, category, source, description, null, create_at, modified_at);
+			// 读取描述
+			while(right<size && line.charAt(right) != ',') {right++;}
+			String description = line.substring(left, right);
+			right++;
+			left = right;
+
+			// 读取tag
+			ArrayList<String> tags = new ArrayList<>();
+			while(right<size) {
+				while(right<size && line.charAt(right) != '|') {right++;}
+				tags.add(line.substring(left, right));
+				right++;
+				left = right;
+			}
+
+			new Transaction(tid, amount, datetime, create_at, modified_at, description);
 		}
 	}
 
 	public static void writeTransactionsToCSV() {
+
+		TransactionManager TM = TransactionManager.getInstance();
 
 		try {
 			
 			FileWriter filewriter = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(filewriter);
 
-			bw.write("transaction_id,datetime,amount,currency,transaction_type,category,source,description,tags,created_at,modified_at\n");
+			bw.write("transaction_id,amount,datetime,created_at,modified_at,description,tags\n");
 
 			String line = "";
 
-			for(int i=0; i<Transaction.allTransactions.size(); ++i) {
-				Transaction t = Transaction.allTransactions.get(i);
+			for(Transaction t: TM.Transactions) {
 				
 				line = t.getTransaction_id() + ',';
-				line += t.getDatetime() + ',';
 				line += t.getAmount() + ",";
-				
-				// 读取币种
-				switch(t.getCurrency()) {
-					case CNY: 	line+="CNY,";break; 
-					case USD: 	line+="USD,";break;
-					default:	line+="undefined currency!,";break;
-				}
-
-				// 读取交易类型
-				switch(t.getType()) {
-					case EXPENSE: 	line+="EXPENSE,";break; 
-					case INCOME: 	line+="INCOME,";break;
-					default: 		line+="undifined type!,";break;
-				}
-
-				// 读取分类
-				switch(t.getCategory()) {
-					case DFT:	line+= "DFT,";break;
-					case FOODS:	line+= "FOODS,";break; 
-					default: 	line+="undifined category,";break;
-				}
-
-				// 读取交易来源
-				switch(t.getSource()) {
-					case USER: 		line+="USER,";break; 
-					case WECHAT:	line+="WECHAT,";break;
-					default: 		line+="undifined source,";break;
-				}
-
-				line += t.getDescription() + ',';
-				line += ',';
+				line += t.getDatetime() + ',';
 				line += t.getCreateTime() + ',';
-				line += t.getModifiedTime() + '\n';
+				line += t.getModifiedTime() + ',';
+				line += t.getDescription() + ',';
 
+				for(Tag tag:TM.getTagsForTransaction(t)) {
+					line += tag.getName() + '|';
+				}
+
+				line += '\n';
+	
 				bw.write(line);
 			}
             
