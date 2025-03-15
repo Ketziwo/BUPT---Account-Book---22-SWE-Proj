@@ -5,9 +5,22 @@ import java.util.ArrayList;
 import java.util.regex.*;
 
 public class Transaction {
-    private static String lastDate = DateUtils.getDate();
-    private static int num = 0;
 
+    /**
+     * 这个动态数组储存所有交易
+     */
+    public static ArrayList<Transaction> allTransactions = new ArrayList<>();
+
+
+    /**
+     * 运行程序时的时间和序号，用于生成交易ID
+     */
+    private static String lastDate = DateUtils.getDate();
+    private static int num = 1;
+
+    /**
+     * 类中的各种基本元素
+     */
     private String transaction_id;  // 交易ID 年月日-序号（如20230901-1）
     private String datetime;        // 交易时间 ISO-8601格式 yyyy-mm-dd hh:mm:ss
     private int amount;             // 交易金额 单位为分
@@ -25,21 +38,38 @@ public class Transaction {
     /**
      * 交易对象构造函数，交易ID自动构造为输入日期+序号，或可以自定义，交易ID只在创建时可定义
      * 
-     * @param tid 交易ID
-     * @param create_time 交易创建时间
-     * @param modified_time 最后修改时间
+     * 提供三种构造函数，全部自定义/ 自定义交易ID/ 全部默认
      */
     public Transaction(String tid, String datetime, int amount, Currency currency, TransactionType type, Category category, Source source, String description, ArrayList<Tag> tags, String created_at, String modified_at) {
         String tidPattern = "^\\d{8}-\\d+$";
-        String datetimwPattern = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) ([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$";
+        String datetimePattern = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) ([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$";
+
+        /*
+         * 检测ID是否符合格式，如果符合格式则试图更新num值，如果不符合则自动生成新ID
+         */
         if(Pattern.matches(tidPattern, tid)) {
+            if(tid.startsWith(lastDate)) {
+                try{
+                    int temp = Integer.parseInt(tid.substring(9)) +1;
+                    if(temp > num)num = temp;
+                }catch(Exception e){}
+            }
             this.transaction_id = tid;
         }
         else {
             this.transaction_id = lastDate + '-' + num++;
         }
 
-        this.datetime = datetime;
+        /*
+         * 检测交易时间是否符合格式
+         */
+        if(Pattern.matches(datetimePattern, datetime)) {
+            this.datetime = datetime;
+        }
+        else {
+            this.datetime = null;
+        }
+
         this.amount = amount;
         this.currency = currency==null?Currency.CNY:currency;
         this.type = type==null?TransactionType.EXPENSE:type;
@@ -48,7 +78,10 @@ public class Transaction {
         this.description = description;
         this.tags = tags==null?new ArrayList<Tag>():tags;
 
-        if (Pattern.matches(datetimwPattern, created_at) && Pattern.matches(datetimwPattern, modified_at)) {
+        /*
+         * 检测时间是否符合格式
+         */
+        if (Pattern.matches(datetimePattern, created_at) && Pattern.matches(datetimePattern, modified_at)) {
             this.created_at = created_at;
             this.modified_at = modified_at;
         }
@@ -56,15 +89,51 @@ public class Transaction {
             this.created_at = DateUtils.getDatetime();
             this.modified_at = DateUtils.getDatetime();
         }
+
+        allTransactions.add(this);
     }
     
     public Transaction(String tid, String created_at, String modified_at) {
-        this(tid,null,0,Currency.CNY,TransactionType.EXPENSE,Category.FOODS,Source.USER,null,null,created_at,modified_at);
+        this(tid,"",0,Currency.CNY,TransactionType.EXPENSE,Category.DFT,Source.USER,"",null,created_at,modified_at);
+    }
+    public Transaction(String tid) {
+        this(tid, "", "");
     }
     public Transaction() {
-        this(lastDate + '-' + num++, DateUtils.getDatetime(), DateUtils.getDatetime());
+        this("");
     }
+
+
+    /**
+     * 从注册表中删除本交易条目
+     */
+    public void remove() {
+        for(int i=0; i<allTransactions.size(); ++i) {
+            if(this == allTransactions.get(i)) {
+                allTransactions.remove(i);
+            }
+        }
+    }
+
+    /**
+     * 从注册表当中寻找该ID的元素
+     */
+    public static Transaction findTransactionByID(String ID) {
+        for(int i=0; i<allTransactions.size()-1; ++i) {
+            if(ID == allTransactions.get(i).getTransaction_id()) {
+                return allTransactions.get(i);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * @return get交易ID
+     */
     public String getTransaction_id() {return transaction_id;}
+
+    public String getDatetime() {return datetime;}
 
     /**
      * @param a 交易金额 单位为分

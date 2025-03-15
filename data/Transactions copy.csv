@@ -1,0 +1,3 @@
+transaction_id,datetime,amount,currency,transaction_type,category,source,description,tags,created_at,modified_at
+20250311-89,2025-03-03 20:37:00,258,CNY,EXPENSE,FOOD,WECHAT,群收款,,2025-03-03 20:37:00,2025-03-03 20:37:00
+20250311-100,222,,,,,,,,,

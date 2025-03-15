@@ -18,12 +18,12 @@ public class AppTest {
     @Test
     public void shouldAnswerWithTrue() {
         System.out.println("Hello");
+        
+        CsvTransactionDao.readTransactionsFromCSV();
 
-        Transaction x = new Transaction("111", "111", "111");
+        new Transaction();
 
-        System.out.println(x.getCreateTime());
-
-        // ArrayList<String> a = CsvTransactionDao.readCsv();
+        CsvTransactionDao.writeTransactionsToCSV();
         // System.out.println(a.get(0));
     }
 }

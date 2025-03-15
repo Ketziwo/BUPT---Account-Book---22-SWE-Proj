@@ -2,34 +2,6 @@ package cn.edu.bupt.model;
 
 import java.util.ArrayList;
 
-/**
- * 交易货币3位代码
- */
-enum Currency {
-    CNY,USD;
-}
-
-/**
- * 收入或支出类型
- */
-enum TransactionType {
-    INCOME,EXPENSE;
-}
-
-/**
- * 分类
- */
-enum Category {
-    FOODS; 
-}
-
-/**
- * 交易来源
- */
-enum Source {
-    USER, WECHAT;
-}
-
 public class Tag {
     private static ArrayList<Tag> allTagList = new ArrayList<Tag>();
 
