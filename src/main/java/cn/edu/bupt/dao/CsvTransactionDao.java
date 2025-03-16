@@ -106,7 +106,7 @@ public final class CsvTransactionDao {
 				left = right;
 			}
 
-			new Transaction(tid, amount, datetime, create_at, modified_at, description);
+			new Transaction(tid, amount, datetime, create_at, modified_at, description, tags);
 		}
 	}
 

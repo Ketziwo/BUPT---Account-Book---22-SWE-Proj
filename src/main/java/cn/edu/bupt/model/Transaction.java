@@ -1,7 +1,7 @@
 package cn.edu.bupt.model;
 
 import cn.edu.bupt.utils.DateUtils;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.regex.*;
 
 public class Transaction {
@@ -143,4 +143,12 @@ public class Transaction {
     public String getModifiedTime() {return modified_at;}
 
     public void fresh() {this.modified_at = DateUtils.getDatetime();}
+
+
+    // 调用 交易管理器的函数
+    public void addTag(Tag tag) { TM.addTagToTA(this, tag); }
+    public void addTag(String str) { TM.addTagToTA(this, str); }
+    public void removeTag(Tag tag) { TM.removeTagFromTA(this, tag); }
+    public void removeTag(String str) { TM.removeTagFromTA(this, str); }
+    public Set<Tag> getTags() { return TM.getTagsForTransaction(this); }
 }
