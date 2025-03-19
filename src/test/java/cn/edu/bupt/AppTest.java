@@ -3,7 +3,9 @@ package cn.edu.bupt;
 import cn.edu.bupt.dao.CsvTransactionDao;
 import cn.edu.bupt.utils.WeChatParser;
 import cn.edu.bupt.model.*;
+import cn.edu.bupt.service.TransactionService; // 引入 TransactionService 类
 
+import java.io.ByteArrayInputStream;
 import java.util.*;
 
 /*
@@ -17,7 +19,11 @@ import org.junit.jupiter.api.Test;
  */
 public class AppTest {
     @Test
-    public void shouldAnswerWithTrue() {  
+    public void shouldAnswerWithTrue() {
+
+//        // 模拟控制台输入
+//        String simulatedInput = "10000\n交易描述\n餐饮, 住宿\n";  // 模拟的输入数据
+//        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
 
         // 从csv中读取
         CsvTransactionDao.readTransactionsFromCSV();
@@ -73,6 +79,12 @@ public class AppTest {
         for(Transaction t: sets) {
             System.out.println(t.getDescription());
         }
+
+
+
+        // 添加一个手动输入的交易
+        TransactionService transactionService = new TransactionService();
+        transactionService.addTransactionManually();
 
         // 最后调用，将交易保存到本地data/Transaction
         CsvTransactionDao.writeTransactionsToCSV();
