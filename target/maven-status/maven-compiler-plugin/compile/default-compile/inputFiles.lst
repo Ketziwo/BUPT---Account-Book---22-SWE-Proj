@@ -1,8 +1,11 @@
-D:\program\soft\BUPT---Account-Book---22-SWE-Proj\src\main\java\cn\edu\bupt\App.java
-D:\program\soft\BUPT---Account-Book---22-SWE-Proj\src\main\java\cn\edu\bupt\dao\CsvTransactionDao.java
-D:\program\soft\BUPT---Account-Book---22-SWE-Proj\src\main\java\cn\edu\bupt\model\Tag.java
-D:\program\soft\BUPT---Account-Book---22-SWE-Proj\src\main\java\cn\edu\bupt\model\Transaction.java
-D:\program\soft\BUPT---Account-Book---22-SWE-Proj\src\main\java\cn\edu\bupt\model\TransactionManager.java
-D:\program\soft\BUPT---Account-Book---22-SWE-Proj\src\main\java\cn\edu\bupt\service\TransactionService.java
-D:\program\soft\BUPT---Account-Book---22-SWE-Proj\src\main\java\cn\edu\bupt\utils\DateUtils.java
-D:\program\soft\BUPT---Account-Book---22-SWE-Proj\src\main\java\cn\edu\bupt\utils\WeChatParser.java
+E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\src\main\java\cn\edu\bupt\App.java
+E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\src\main\java\cn\edu\bupt\dao\CsvTransactionDao.java
+E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\src\main\java\cn\edu\bupt\model\Tag.java
+E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\src\main\java\cn\edu\bupt\model\Transaction.java
+E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\src\main\java\cn\edu\bupt\model\TransactionManager.java
+E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\src\main\java\cn\edu\bupt\service\TransactionService.java
+E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\src\main\java\cn\edu\bupt\utils\DateUtils.java
+E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\src\main\java\cn\edu\bupt\utils\WeChatParser.java
+E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\src\main\java\cn\edu\bupt\view\BillManagementApp.java
+E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\src\main\java\cn\edu\bupt\view\FinanceDashboard.java
+E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\src\main\java\cn\edu\bupt\view\FinanceManagerPanel.java

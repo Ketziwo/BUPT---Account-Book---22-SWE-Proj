@@ -1,1 +1,4 @@
 cn\edu\bupt\service\TransactionService.class
+cn\edu\bupt\view\BillManagementApp.class
+cn\edu\bupt\view\FinanceManagerPanel.class
+cn\edu\bupt\view\FinanceDashboard.class

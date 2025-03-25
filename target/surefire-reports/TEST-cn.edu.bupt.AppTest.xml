@@ -1,134 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="cn.edu.bupt.AppTest" time="0.05" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="cn.edu.bupt.AppTest" time="500.261" tests="1" errors="0" skipped="0" failures="0">
   <properties>
-    <property name="java.specification.version" value="22"/>
+    <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="GBK"/>
-    <property name="java.class.path" value="c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\test-classes;c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\classes;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.0\junit-jupiter-api-5.11.0.jar;C:\Users\Dovep\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Dovep\.m2\repository\org\junit\platform\junit-platform-commons\1.11.0\junit-platform-commons-1.11.0.jar;C:\Users\Dovep\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.0\junit-jupiter-params-5.11.0.jar;C:\Users\Dovep\.m2\repository\org\apache\commons\commons-csv\1.10.0\commons-csv-1.10.0.jar;"/>
+    <property name="sun.awt.enableExtraMouseButtons" value="true"/>
+    <property name="java.class.path" value="E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\target\test-classes;E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\target\classes;C:\Users\lenovo\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.0\junit-jupiter-api-5.11.0.jar;C:\Users\lenovo\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\lenovo\.m2\repository\org\junit\platform\junit-platform-commons\1.11.0\junit-platform-commons-1.11.0.jar;C:\Users\lenovo\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\lenovo\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.0\junit-jupiter-params-5.11.0.jar;C:\Users\lenovo\.m2\repository\org\apache\commons\commons-csv\1.10.0\commons-csv-1.10.0.jar;"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
     <property name="user.timezone" value="Asia/Shanghai"/>
     <property name="os.name" value="Windows 11"/>
-    <property name="java.vm.specification.version" value="22"/>
+    <property name="java.vm.specification.version" value="17"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="CN"/>
-    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-22\bin"/>
-    <property name="sun.java.command" value="C:\Users\Dovep\AppData\Local\Temp\surefire17225687793378940310\surefirebooter-20250316125224430_3.jar C:\Users\Dovep\AppData\Local\Temp\surefire17225687793378940310 2025-03-16T12-52-24_334-jvmRun1 surefire-20250316125224430_1tmp surefire_0-20250316125224430_2tmp"/>
+    <property name="sun.boot.library.path" value="D:\Java\bin"/>
+    <property name="sun.java.command" value="C:\Users\lenovo\AppData\Local\Temp\surefire16409967785132761759\surefirebooter-20250325152526354_3.jar C:\Users\lenovo\AppData\Local\Temp\surefire16409967785132761759 2025-03-25T15-25-26_185-jvmRun1 surefire-20250325152526354_1tmp surefire_0-20250325152526354_2tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\test-classes;c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj\target\classes;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.0\junit-jupiter-api-5.11.0.jar;C:\Users\Dovep\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Dovep\.m2\repository\org\junit\platform\junit-platform-commons\1.11.0\junit-platform-commons-1.11.0.jar;C:\Users\Dovep\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Dovep\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.0\junit-jupiter-params-5.11.0.jar;C:\Users\Dovep\.m2\repository\org\apache\commons\commons-csv\1.10.0\commons-csv-1.10.0.jar;"/>
+    <property name="surefire.test.class.path" value="E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\target\test-classes;E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature\target\classes;C:\Users\lenovo\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.0\junit-jupiter-api-5.11.0.jar;C:\Users\lenovo\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\lenovo\.m2\repository\org\junit\platform\junit-platform-commons\1.11.0\junit-platform-commons-1.11.0.jar;C:\Users\lenovo\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\lenovo\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.0\junit-jupiter-params-5.11.0.jar;C:\Users\lenovo\.m2\repository\org\apache\commons\commons-csv\1.10.0\commons-csv-1.10.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
-    <property name="user.home" value="C:\Users\Dovep"/>
+    <property name="user.home" value="C:\Users\lenovo"/>
     <property name="user.language" value="zh"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
-    <property name="java.version.date" value="2024-07-16"/>
-    <property name="java.home" value="C:\Program Files\Java\jdk-22"/>
+    <property name="java.version.date" value="2024-04-16"/>
+    <property name="java.home" value="D:\Java"/>
     <property name="file.separator" value="\"/>
-    <property name="basedir" value="c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj"/>
+    <property name="basedir" value="E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Dovep\AppData\Local\Temp\surefire17225687793378940310\surefirebooter-20250316125224430_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\lenovo\AppData\Local\Temp\surefire16409967785132761759\surefirebooter-20250325152526354_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="java.runtime.version" value="22.0.2+9-70"/>
-    <property name="user.name" value="Dovep"/>
-    <property name="stdout.encoding" value="GBK"/>
+    <property name="java.runtime.version" value="17.0.11+7-LTS-207"/>
+    <property name="user.name" value="lenovo"/>
     <property name="path.separator" value=";"/>
     <property name="os.version" value="10.0"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
-    <property name="file.encoding" value="UTF-8"/>
+    <property name="file.encoding" value="GBK"/>
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
-    <property name="localRepository" value="C:\Users\Dovep\.m2\repository"/>
+    <property name="localRepository" value="C:\Users\lenovo\.m2\repository"/>
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
-    <property name="java.io.tmpdir" value="C:\Users\Dovep\AppData\Local\Temp\"/>
-    <property name="java.version" value="22.0.2"/>
-    <property name="user.dir" value="c:\Users\Dovep\Mine\CodeFile\25.3.4 SE Group PJ\BUPT---Account-Book---22-SWE-Proj"/>
+    <property name="java.io.tmpdir" value="C:\Users\lenovo\AppData\Local\Temp\"/>
+    <property name="idea.version" value="2023.3.4"/>
+    <property name="java.version" value="17.0.11"/>
+    <property name="user.dir" value="E:\group work 2025\BUPT---Account-Book---22-SWE-Proj-feature"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="sun.os.patch.level" value=""/>
     <property name="native.encoding" value="GBK"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk-22\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Siemens\Automation\Simatic OAM\bin;C:\Program Files\CMake\bin;C:\Library\mingw64-x86_64-posix-seh\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\ProgramData\anaconda3;C:\ProgramData\anaconda3\Scripts;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\MATLAB\R2024a\bin;C:\Program Files (x86)\Tencent\微信web开发者工具\dll;C:\Program Files\Git\cmd;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA app\NvDLISR;C:\Program Files\PKWARE\pkzipc;C:\Program Files (x86)\Common Files\Siemens\ACE;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files (x86)\Common Files\Siemens\;C:\Program Files (x86)\Common Files\Siemens\Interfaces;C:\Program Files (x86)\Common Files\Siemens\ACE\Interfaces;C:\Program Files\dotnet\;C:\Program Files\Apache Software Foundation\apache-maven-3.9.9\bin;;C:\Users\Dovep\AppData\Local\Microsoft\WindowsApps;C:\Program Files\JetBrains\PyCharm 2024.1.4\bin;C:\Program Files\Microsoft VS Code\Microsoft VS Code\bin;C:\ProgramData\intelFPGA_lite\18.1\modelsim_ase\win32aloem;C:\Program Files\questasim64_10.6c\win64;C:\Program Files\Apache Software Foundation\Tomcat 11.0\bin;%USERPROFILE%\AppData\Local\Microsoft\WindowsApps;;."/>
+    <property name="java.library.path" value="D:\Java\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;F:\matlab\bin;F:\runtime\win64;F:\bin;D:\matlab\bin;D:\runtime\win64;D:\down\mingw64\bin;D:\bin;D:\polyspace\bin;F:\polyspace\bin;F:\java\bin;D:\java\bin;C:\Program Files (x86)\dotnet\;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;D:\apache-maven-3.9.9\bin;C:\Users\lenovo\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\lenovo\AppData\Local\Programs\Python\Python311\;C:\Users\lenovo\AppData\Local\Programs\Python\Python312\Scripts\;C:\Users\lenovo\AppData\Local\Programs\Python\Python312\;C:\Users\lenovo\AppData\Local\Programs\Python\Launcher\;C:\Users\lenovo\AppData\Local\Microsoft\WindowsApps;C:\Users\lenovo\AppData\Local\Programs\Microsoft VS Code\bin;D:\down\mingw64;D:\java\bin;D:\PyCharm 2024.1.4\bin;;D:\新建文件夹\modelsim_ase\win32aloem;D:\quar\modelsim_ase\win32aloem;C:\Users\lenovo\AppData\Local\Muse Hub\lib;D:\Tomcat\apache-tomcat-10.1.33\bin;;."/>
     <property name="java.vm.info" value="mixed mode, sharing"/>
-    <property name="stderr.encoding" value="GBK"/>
     <property name="java.vendor" value="Oracle Corporation"/>
-    <property name="java.vm.version" value="22.0.2+9-70"/>
+    <property name="java.vm.version" value="17.0.11+7-LTS-207"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
-    <property name="java.class.version" value="66.0"/>
+    <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="shouldAnswerWithTrue" classname="cn.edu.bupt.AppTest" time="0.037">
-    <system-out><![CDATA[57
-
-
-
-a是否在集合当中：true
-a元素包含的tag:
-饮食
-支出
-所有包含/”饮食/“tag的交易描述：
-我是A
-我是b
-
-]]></system-out>
-    <system-err><![CDATA[描述："新辣道鱼火锅（交通大学店）-美团App-25022611100300001303126429856512"||金额：2851分
-描述："朴正喜韩式炸鸡·火鸡面（西直门店）-美团App-25022711100300001303289325376512"||金额：2976分
-描述："麦当劳"||金额：1110分
-描述："麦当劳"||金额：1260分
-描述："京东-订单编号311051288070"||金额：10125分
-描述："麦当劳"||金额：2440分
-描述："京东-订单编号309928919220"||金额：19602分
-描述："喜茶（北京望京万象汇店）-美团App-25020911100300001300230136228512"||金额：2000分
-描述："转账备注:微信转账"||金额：500分
-描述："blue frog蓝蛙(北京望京万象汇店)-美团App-25020511100300001309471189672512"||金额：5190分
-描述："汉堡王（诚盈中心22174店）-美团App-25022111100300001302191419388512"||金额：3280分
-描述："DQ.蛋糕.冰淇淋（合生汇店）-美团App-25021111100300001300565467176512"||金额：4651分
-描述："KFC_PREWX10012468144606540136637"||金额：2990分
-描述："麦当劳"||金额：1200分
-描述："/"||金额：15800分
-描述："/"||金额：1445分
-描述："美团收银909700197919191996"||金额：63200分
-描述："老广烧腊（望京店）-美团App-25021711100300001301540768835512"||金额：2500分
-描述："订单付款"||金额：990分
-描述："LINLEE林里·手打柠檬茶（朝阳融新科技中心店）-美团App-25022111100300001302218465869512"||金额：2550分
-描述："美团订单-25021411100300001300957737671512"||金额：1680分
-描述："麦当劳"||金额：2180分
-描述："食其家·牛丼咖喱（北京望京新世界店）-美团App-25020511100300001309374648176512"||金额：2760分
-描述："转账备注:微信转账"||金额：400000分
-描述："美团订单-25022211100300001302496860517512"||金额：3870分
-描述："TRIPS BURGER（富市康民美食城第十六档口店）-美团App-25022811100300001303375158242512"||金额：2820分
-描述："先购后付"||金额：945分
-描述：||金额：5000分
-描述："/"||金额：3861分
-描述："稻川岛滑蛋饭（第B1档口-橘猫精选美食城店）-美团App-25022211100300001302478026457512"||金额：2480分
-描述："京东-订单编号310612569093"||金额：5198分
-描述："转账备注:微信转账"||金额：8400分
-描述："吉野家(新街口外大街)-美团App-25022411100300001302752642242512"||金额：2330分
-描述：||金额：5000分
-描述："/"||金额：725分
-描述："/"||金额：258分
-描述："订单：865360766401"||金额：2240分
-描述："T.I推理空间·剧本杀（朝阳店）-美团App-25021111100300001300518964564512"||金额：15600分
-描述："日本个人旅游签证3个月单次北京送签简化办理代做机酒材料免资产全电子材料免邮寄适用于指"||金额：25800分
-描述："抖喜新疆炒米粉(来广营店)-美团App-25021411100300001300940491155512"||金额：2050分
-描述："DQ.蛋糕.冰淇淋（望京凯德店）-美团App-25020511100300001309430324349512"||金额：4840分
-描述："/"||金额：15800分
-描述："订单付款"||金额：990分
-描述："柳记港式烧腊（第11档口-尚品食佳美食城店）-美团App-25022411100300001302819006366512"||金额：2730分
-描述："/"||金额：1011分
-描述："京东-订单编号310081082942"||金额：5265分
-描述："鸡柳大人（第16档口康芝美食城店）-美团App-25020711100300001309722925582512"||金额：2488分
-描述："麦当劳"||金额：1050分
-描述："北京新影联华谊兄弟影院 卖品"||金额：4900分
-描述："吉野家(创瑞街保利广场店)-美团App-25021311100300001300774147607512"||金额：2910分
-描述："谢尔比PeriPeri葡式烤鸡(望京店）-美团App-25021011100300001300272780110512"||金额：2020分
-描述："豪七港式烧腊（健德门店）-美团App-25030311100300001303936225885512"||金额：2890分
-描述："/"||金额：800分
-描述："/"||金额：15800分
-描述："美团平台商户"||金额：153分
-描述："查询购买记录：reportaproblem.apple.com||金额：0分
-描述："犟骨头排骨饭（北邮店）-美团App-25022611100300001303064519285512"||金额：2850分
-]]></system-err>
-  </testcase>
+  <testcase name="shouldAnswerWithTrue" classname="cn.edu.bupt.AppTest" time="500.24"/>
 </testsuite>
