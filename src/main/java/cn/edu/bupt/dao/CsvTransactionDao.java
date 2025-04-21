@@ -1,149 +1,134 @@
 package cn.edu.bupt.dao;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Locale.Category;
-
-import javax.xml.transform.Source;
-
 import cn.edu.bupt.model.*;
 
+import java.io.*;
+import java.security.spec.ECFieldF2m;
+import java.util.*;
+
 public final class CsvTransactionDao {
+	// private static File file = new File("data/Transactions.csv");
 
-	static private File file = new File("data/Transactions.csv");
-     /**
-     * BufferedReader 读取
-     */
-    public static ArrayList<String> readCSV(File file) {
-        try
-		{
-			ArrayList<String> data = new ArrayList<>();//list of lists to store data
-			FileReader filereader = new FileReader(file);
-			BufferedReader bufferedreader = new BufferedReader(filereader);
-			
-			//Reading until we run out of lines
-			String line;
+	public CsvTransactionDao() {
+	}
 
-			while((line = bufferedreader.readLine()) != null) {
-				data.add(line);
-			}
-
-			bufferedreader.close();
-
-			return data;
-
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-        return null;
-    }
-	public static ArrayList<String> readCSV(){return readCSV(file);} 
-
-	public static void readTransactionsFromCSV() {
-		ArrayList<String> csv = readCSV();
-		if(csv == null)return;
-
-		// transaction_id,amount,datetime,created_at,modified_at,description,tags
-
-		for(int i=1; i<csv.size(); ++i) {
-			String line = csv.get(i);
-			int size = line.length();
-			int left=0;
-			int right=0;
-
-			// 读取交易ID
-			while(right<size && line.charAt(right) != ',') {right++;}
-			String tid = line.substring(left, right);
-			right++;
-			left = right;
-
-			// 读取交易金额
-			while(right<size && line.charAt(right) != ',') {right++;}
-			int amount = 0;
-			try{
-				amount = Integer.parseInt(line.substring(left, right));
-			}catch(Exception e){}
-			right++;
-			left = right;
-
-			// 读取交易时间
-			while(right<size && line.charAt(right) != ',') {right++;}
-			String datetime = line.substring(left, right);
-			right++;
-			left = right;
-
-			// 读取创建时间
-			while(right<size && line.charAt(right) != ',') {right++;}
-			String create_at = line.substring(left, right);
-			right++;
-			left = right;
-
-			// 读取修改时间
-			while(right<size && line.charAt(right) != ',') {right++;}
-			String modified_at = line.substring(left, right);
-			right++;
-			left = right;
-
-			// 读取描述
-			while(right<size && line.charAt(right) != ',') {right++;}
-			String description = line.substring(left, right);
-			right++;
-			left = right;
-
-			// 读取tag
-			ArrayList<String> tags = new ArrayList<>();
-			while(right<size) {
-				while(right<size && line.charAt(right) != '|') {right++;}
-				tags.add(line.substring(left, right));
-				right++;
-				left = right;
-			}
-
-			new Transaction(tid, amount, datetime, create_at, modified_at, description, tags);
+	public static void readAllCSV() {
+		File allUsers = new File("data/allUsers.csv");
+		Set<User> users = readUsersFromCSV(allUsers);
+		for(User user: users){
+			// System.out.println(user.getname());
+			File tafile = new File(user.getpath());
+			readTransactionsFromCSV(tafile, user);
 		}
 	}
 
-	public static void writeTransactionsToCSV() {
+	public static void updateAllCSV() {
+		File allUsers = new File("data/allUsers.csv");
+		try{
+			FileWriter filewriter = new FileWriter(allUsers); // Overwrite the file
+			BufferedWriter userbw = new BufferedWriter(filewriter);
 
-		TransactionManager TM = TransactionManager.getInstance();
+			String userLine = "";
+			for(User user:TransactionManager.getInstance().Users) {
+				userLine = userLine.concat(user.getname()+","+user.getPwd()+"\n");
 
+				File userfile = new File("data/Transaction_"+user.getname()+".csv");
+				try{
+					userfile.createNewFile();
+				} catch(Exception e){}
+				writeTransactionsToCSV(userfile, user.getTransactions());
+			}
+			userbw.write(userLine);
+			userbw.close();
+		} catch(Exception e){}
+	}
+
+	public static ArrayList<String[]> readCSV(File file) {
 		try {
-			
-			FileWriter filewriter = new FileWriter(file);
-			BufferedWriter bw = new BufferedWriter(filewriter);
+			ArrayList<String[]> data = new ArrayList<>();
+			FileReader filereader = new FileReader(file);
+			BufferedReader bufferedreader = new BufferedReader(filereader);
 
-			bw.write("transaction_id,amount,datetime,created_at,modified_at,description,tags\n");
+			String line;
+			while ((line = bufferedreader.readLine()) != null) {
+				String[] items = line.trim().split(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)",-1);
+				data.add(items);
+			}
 
-			String line = "";
+			bufferedreader.close();
+			return data;
+		} catch (Exception var5) {
+			var5.printStackTrace();
+			return null;
+		}
+	}
 
-			for(Transaction t: TM.Transactions) {
-				
-				line = t.getTransaction_id() + ',';
-				line += t.getAmount() + ",";
-				line += t.getDatetime() + ',';
-				line += t.getCreateTime() + ',';
-				line += t.getModifiedTime() + ',';
-				line += t.getDescription() + ',';
-
-				for(Tag tag:TM.getTagsForTransaction(t)) {
-					line += tag.getName() + '|';
+	public static Set<User> readUsersFromCSV(File file) {
+		Set<User> users = new HashSet<>();
+		List<String[]> csv = readCSV(file); // 假设该方法正确读取文件所有行
+		
+		for (String[] line : csv) {
+			if (!line[0].isEmpty()) {
+				User u;
+				if(line[0].equals("default")) {
+					u = User.defaultUser;
 				}
+				else {
+					u = new User(line[0], line[1]);
+				}
+				users.add(u); // 自动去重（依赖User的equals/hashCode）
+				TransactionManager.getInstance().Users.add(u);
+			}
+		}
+		
+		return users;
+	}
 
-				line += '\n';
-	
+	public static void readTransactionsFromCSV(File file, User user) {
+		List<String[]> csv = readCSV(file);
+		if (csv != null) {
+			csv.remove(0);
+			for (String[] parts:csv) { // Skip the header
+				// String line = csv.get(i);
+				// String[] parts = line.split(",");
+				if (parts.length >= 7) {
+					String tid = parts[0];
+					int amount = 0;
+					amount = Integer.parseInt(parts[1]);
+					
+					String datetime = parts[2];
+					String create_at = parts[3];
+					String modified_at = parts[4];
+					String description = parts[5];
+					String[] tagParts = parts[6].split("\\|");
+					ArrayList<String> tags = new ArrayList<>();
+					for (String tag : tagParts) {
+						tags.add(tag);
+					}
+					Transaction transaction = new Transaction(tid, user, amount, datetime, create_at, modified_at, description, tags);
+					TransactionManager.getInstance().Transactions.add(transaction);
+				}
+			}
+		}
+	}
+
+	public static void writeTransactionsToCSV(File file, Set<Transaction> tas) {
+		try {
+			FileWriter filewriter = new FileWriter(file); // Overwrite the file
+			BufferedWriter bw = new BufferedWriter(filewriter);
+			bw.write("transaction_id,amount,datetime,created_at,modified_at,description,tags\n");
+			for (Transaction t : tas) {
+				String line = t.getTransaction_id() + "," +
+						t.getAmount() + "," +
+						t.getDatetime() + "," +
+						t.getCreateTime() + "," +
+						t.getModifiedTime() + "," +
+						t.getDescription() + "," +
+						String.join("|", t.getTags().stream().map(Tag::getName).toArray(String[]::new)) + "\n";
 				bw.write(line);
 			}
-            
-            bw.close();
-			return;
-        } catch(Exception e){
+			bw.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
