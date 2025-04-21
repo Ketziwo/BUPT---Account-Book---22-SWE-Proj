@@ -15,7 +15,9 @@ public class Transaction {
     /**
      * 类中的各种基本元素
      */
+
     private final String transaction_id;    // 交易ID 年月日-序号（如20230901-1）
+    private User user;                      // 交易用户
     private int amount;                     // 交易金额 单位为分
 
     private String datetime;                // 交易时间 ISO-8601格式 yyyy-mm-dd hh:mm:ss
@@ -24,12 +26,14 @@ public class Transaction {
     
     private String description;             // 交易详情描述（自由文本）
 
+    private Set<Tag> Tags = new HashSet<Tag>();
+
     /**
      * 交易对象构造函数，交易ID自动构造为输入日期+序号，或可以自定义，交易ID只在创建时可定义
      * 
      * 提供四种构造函数，全部自定义；全部自定义+tags；自定义交易细节+tags+默认ID和时间；全部默认
      */
-    public Transaction(String tid, int amount, String datetime, String created_at, String modified_at, String description) {
+    public Transaction(String tid, User user, int amount, String datetime, String created_at, String modified_at, String description) {
         final String tidPattern = "^\\d{8}-\\d+$";
         final String datetimePattern = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) ([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$";
 
@@ -48,6 +52,13 @@ public class Transaction {
         else {
             this.transaction_id = lastDate + '-' + num++;
         }
+
+
+        /*
+         * 初始化用户
+         */
+        this.user = user;
+        user.getTransactions().add(this);
 
         /*
          * 初始化金额
@@ -83,17 +94,17 @@ public class Transaction {
         TM.Transactions.add(this);
     }
     
-    public Transaction(String tid, int amount, String datetime, String created_at, String modified_at, String description, ArrayList<String> tags) {
-        this(tid, amount, datetime, created_at, modified_at, description);
+    public Transaction(String tid, User user, int amount, String datetime, String created_at, String modified_at, String description, ArrayList<String> tags) {
+        this(tid, user, amount, datetime, created_at, modified_at, description);
         for(String str: tags) {
             TM.addTagToTA(this, str);
         }
     }
-    public Transaction(int amount, String datetime, String description, ArrayList<String> tags) {
-        this("", amount, datetime, "", "", description, tags);
+    public Transaction(User user, int amount, String datetime, String description, ArrayList<String> tags) {
+        this("", user, amount, datetime, "", "", description, tags);
     }
     public Transaction() {
-        this("", 0, "", "", "", "");
+        this("", User.defaultUser, 0, "", "", "", "");
     }
 
 
@@ -110,6 +121,17 @@ public class Transaction {
     public String getTransaction_id() {return transaction_id;}
 
     /**
+     * set用户
+     */
+    public void setUser(User u) {
+        this.user.getTransactions().remove(this);
+        this.user = u;
+        u.getTransactions().add(this);
+        refresh();
+    }
+    public User getUser() {return this.user;}
+
+    /**
      * set交易时间
      */
     public void setDatetime(String t) {
@@ -117,7 +139,7 @@ public class Transaction {
         if(Pattern.matches(datetimePattern, t)) {
             this.datetime = t;
         }
-        fresh();
+        refresh();
     }
     public String getDatetime() {return datetime;}
 
@@ -126,7 +148,7 @@ public class Transaction {
      */
     public void setAmount(int a) {
         amount = a;
-        fresh();
+        refresh();
     }
     public int getAmount() {return amount;}
 
@@ -135,14 +157,14 @@ public class Transaction {
      */
     public void setDescription(String d) {
         description = d;
-        fresh();
+        refresh();
     }
     public String getDescription() {return description;}
 
     public String getCreateTime() {return created_at;}
     public String getModifiedTime() {return modified_at;}
 
-    public void fresh() {this.modified_at = DateUtils.getDatetime();}
+    public void refresh() {this.modified_at = DateUtils.getDatetime();}
 
 
     // 调用 交易管理器的函数
@@ -150,5 +172,5 @@ public class Transaction {
     public void addTag(String str) { TM.addTagToTA(this, str); }
     public void removeTag(Tag tag) { TM.removeTagFromTA(this, tag); }
     public void removeTag(String str) { TM.removeTagFromTA(this, str); }
-    public Set<Tag> getTags() { return TM.getTagsForTransaction(this); }
+    public Set<Tag> getTags() { return this.Tags; }
 }
