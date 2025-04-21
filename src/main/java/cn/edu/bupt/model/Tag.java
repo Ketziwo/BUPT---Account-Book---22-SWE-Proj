@@ -10,14 +10,12 @@ public class Tag {
     private final String name;
 
     public Tag(String name) {
-        if(!TM.Tags.contains(name)) {
-            this.name = name;
-            TM.Tags.add(this);
-            TM.tagRegistry.put(name, this);
+        if(TM.Tags.contains(name)) {
+            throw new IllegalArgumentException("Tag名称重复: " + name);
         }
-        else {
-            this.name = "";
-        }
+        this.name = name;
+        TM.Tags.add(this);
+        TM.tagRegistry.put(name, this);
     }
 
     public String getName() { return name; }
@@ -25,13 +23,9 @@ public class Tag {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Tag)) return false;
-        return name.equals(((Tag) o).name);
-    }
-
-    @Override
-    public int hashCode() {
-        return name.hashCode();
+        if (o instanceof Tag) return name.equals(((Tag) o).name);
+        if (o instanceof String) return name.equals(((String)o));
+        return false;
     }
 }
 
