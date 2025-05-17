@@ -11,7 +11,7 @@ public class MainFrame extends JFrame{
     private CardLayout cardLayout;
     private JPanel mainContentPanel;
     public LeftPanel leftPanel;
-    public SearchPanel searchPanel;
+    public ManagerPanel managerPanel;
 
     public MainFrame(Object lock) {
         setTitle("智能账单管理");
@@ -39,7 +39,7 @@ public class MainFrame extends JFrame{
         // 4. 预加载所有功能面板
         // mainContentPanel.add(new HomePanel(), "首页");
         // mainContentPanel.add(new BudgetPanel(), "预算");
-        mainContentPanel.add(searchPanel = new SearchPanel(), "find");
+        mainContentPanel.add(managerPanel = new ManagerPanel(), "find");
         mainContentPanel.add(new SettingsPanel(this), "user");
         
         layeredPane.add(mainContentPanel, BorderLayout.CENTER);
@@ -72,6 +72,6 @@ public class MainFrame extends JFrame{
     }
     public void refresh() {
         leftPanel.refresh();
-        searchPanel.refresh(TransactionManager.getInstance().currentUser.getTransactions());
+        // managerPanel.refresh(TransactionManager.getInstance().currentUser.getTransactions());
     }
 }
