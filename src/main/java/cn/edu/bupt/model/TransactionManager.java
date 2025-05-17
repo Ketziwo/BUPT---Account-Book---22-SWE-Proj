@@ -12,14 +12,43 @@ final public class TransactionManager {
     public final Set<Tag> Tags = new HashSet<Tag>();
     public final Map<String, Tag> tagRegistry = new HashMap<String,Tag>();
 
-    // // 构建Transaction和Tag对象的双向对应表
-    // private final Map<Transaction, Set<Tag>> taToTags = new HashMap<>();
-    // private final Map<Tag, Set<Transaction>> tagToTas = new HashMap<>();
-    
+    // 储存默认Tag
+    public final Set<Tag> expenseTags = new HashSet<Tag>();
+    public final Set<Tag> incomeTags = new HashSet<Tag>();
+
     // 单例实现
-    private static final TransactionManager INSTANCE = new TransactionManager();
+    private static TransactionManager INSTANCE;
     private TransactionManager() {}
-    public static TransactionManager getInstance() { return INSTANCE; }
+    public static TransactionManager getInstance() {
+        if (INSTANCE==null) {
+            INSTANCE = new TransactionManager();
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_CAR__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_CHILD__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_CLOTH__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_DEVICE__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_ENTERTAINMENT__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_FOOD__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_GIFT__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_HOUSING__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_INTERNET__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_MAKEUP__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_MEDICAL__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_NECESSARY__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_PET__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_SNACK__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_SPORT__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_STUDY__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_TABACCO_ALCOHOL__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_TRANSPORT__"));
+            INSTANCE.expenseTags.add(new Tag("__EXPENSE_TRAVEL__"));
+            INSTANCE.incomeTags.add(new Tag("__INCOME__"));
+            INSTANCE.incomeTags.add(new Tag("__INCOME_HONGBAO__"));
+            INSTANCE.incomeTags.add(new Tag("__INCOME_SALARY__"));
+            INSTANCE.incomeTags.add(new Tag("__INCOME_STOCK__"));
+        }
+        return INSTANCE;
+    }
 
     // 核心操作方法
 
