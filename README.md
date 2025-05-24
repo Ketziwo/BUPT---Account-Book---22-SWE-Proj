@@ -1,3 +1,135 @@
+# Smart Bill Management System  
+
+## Project Overview  
+This system is an intelligent bill manager developed based on Java Swing, designed to help users effectively manage personal finances, track income and expenses, set budgets, visualize financial status, and provide AI-powered analytical capabilities. The system supports multi-user management, persistent data storage, and intuitive financial status displays through charts.  
+
+## Main Features  
+
+### 1. Bill Management  
+- **Transaction Records**: Supports adding, modifying, deleting, and querying transaction records.  
+- **Category Tags**: Uses a tagging system to categorize transactions, including rich preset tags (e.g., dining, entertainment, transportation, etc.).  
+- **Search and Filter**: Allows filtering transaction records by time, amount, tags, and other criteria.  
+
+### 2. Budget Management  
+- **Budget Setting**: Enables setting budget amounts for specific time periods and categories.  
+- **Budget Tracking**: Monitors budget usage in real-time and displays budget completion status.  
+- **Overspending Alerts**: Provides visual feedback when approaching or exceeding the budget.  
+
+### 3. Data Visualization  
+- **Income and Expense Trends**: Shows trends in income and expenses over a period.  
+- **Category Pie Chart**: Displays the proportion of expenses across different categories.  
+- **Monthly Comparison**: Compares income and expenses across different months.  
+
+### 4. Smart Analysis  
+- **WeChat Bill Import**: Supports direct import of WeChat Pay CSV bill files.  
+- **AI-Powered Analysis**: Uses AI technology to automatically categorize and analyze transaction records.  
+- **Budget Advisor**: Provides intelligent budget recommendations based on historical data.  
+
+### 5. User Management  
+- **Multi-User Support**: Supports creating and switching between multiple user accounts.  
+- **Account Security**: Provides basic user authentication functionality.  
+
+## Technical Architecture  
+
+### Design Patterns  
+- **MVC Architecture**: The project adopts the MVC design pattern, clearly separating data models, views, and controllers.  
+- **Singleton Pattern**: Uses the singleton pattern to manage global resources and data.  
+
+### Core Components  
+- **Data Models**:  
+  - `Transaction`: Transaction record model.  
+  - `Budget`: Budget model.  
+  - `Tag`: Tag model.  
+  - `User`: User model.  
+  - `TransactionManager`: Global data manager.  
+
+- **Data Access**:  
+  - `CsvTransactionDao`: CSV data persistence implementation.  
+  - `DeepSeekClient`: AI service interface.  
+
+- **User Interface**:  
+  - `MainFrame`: Main window frame.  
+  - `ManagerPanel`: Bill management panel.  
+  - `BudgetPanel`: Budget management panel.  
+  - `ChartsPanel`: Data visualization panel.  
+  - `SettingsPanel`: Settings and user management panel.  
+
+### Technology Stack  
+- **Programming Language**: Java 17  
+- **UI Framework**: Java Swing  
+- **Build Tool**: Maven  
+- **Chart Library**: JFreeChart  
+- **Data Processing**: Apache Commons CSV  
+- **JSON Handling**: Google Gson  
+
+## System Screenshots  
+
+*Note: Screenshots of various system features can be added here.*  
+
+## Installation and Usage  
+
+### System Requirements  
+- JDK 17 or later  
+- Maven 3.6 or later  
+
+### Build and Run  
+1. Clone the repository:  
+   ```bash  
+   git clone https://github.com/yourname/BUPT---Account-Book---22-SWE-Proj.git  
+   cd BUPT---Account-Book---22-SWE-Proj  
+   ```  
+
+2. Build the project using Maven:  
+   ```bash  
+   mvn clean package  
+   ```  
+
+3. Run the application:  
+   ```bash  
+   java -jar target/BUPT---Account-Book---22-SWE-Proj-1.0-SNAPSHOT.jar  
+   ```  
+
+### Basic Usage Flow  
+1. The default user is automatically logged in upon first launch.  
+2. Switch or create new users in the settings panel.  
+3. Add and manage transaction records in the transaction management panel.  
+4. Set and track budgets in the budget panel.  
+5. View financial visualizations in the charts panel.  
+
+## Project Structure  
+```
+src/  
+  main/  
+    java/  
+      cn/  
+        edu/  
+          bupt/  
+            App.java                  # Application entry point  
+            dao/                      # Data access layer  
+              CsvTransactionDao.java  # CSV data operations  
+              DeepSeekClient.java     # AI service interface  
+            model/                    # Data models  
+              Budget.java             # Budget model  
+              Tag.java                # Tag model  
+              Transaction.java        # Transaction record model  
+              TransactionManager.java # Data manager  
+              User.java               # User model  
+            utils/                    # Utility classes  
+              DateUtils.java          # Date utilities  
+              TransactionTypeUtils.java # Transaction type utilities  
+            view/                     # View layer  
+              MainFrame.java          # Main window  
+              ManagerPanel.java       # Transaction management panel  
+              BudgetPanel.java        # Budget management panel  
+              ChartsPanel.java        # Charts panel  
+              SettingsPanel.java      # Settings panel  
+              LeftPanel.java          # Left navigation panel  
+  test/                               # Test code  
+data/                                 # Data file directory  
+resources/                            # Resource file directory  
+```  
+
+
 # 智能账单管理系统
 
 ## 项目概述
