@@ -3,7 +3,7 @@ package cn.edu.bupt.utils;
 import java.io.File;
 import java.util.*;
 
-import cn.edu.bupt.dao.CsvTransactionDao;
+import cn.edu.bupt.dao.*;
 import cn.edu.bupt.model.*;
 
 public final class WeChatParser {
@@ -18,11 +18,6 @@ public final class WeChatParser {
             // 2025-03-03 20:37:32,群收款,dynandu,"/",支出,¥2.58,零钱,支付成功,100004950125030300077141738419180280	,10000495012025030302202580549066	,"/"
             ArrayList<String> tags = new ArrayList<>();
             tags.add("WECHAT");
-            switch(line[4]) {
-                    case "支出": tags.add("支出");break;
-                    case "收入": tags.add("收入");break;
-                }
-            tags.add("未分类");
 
             int amount = 0;
             try{
@@ -31,11 +26,21 @@ public final class WeChatParser {
                 e.printStackTrace();
             }
 
-            new Transaction(TransactionManager.getInstance().currentUser, amount, line[0], line[3], tags); 
+            Transaction ta = new Transaction(TransactionManager.getInstance().currentUser, amount, line[0], line[3], tags); 
+            
+            if(line[4].equals("\"支出\"")) {TransactionTypeUtils.setIOcome(ta, Tag.EXPENSE);}
+            else if (line[4].equals("\"收入\"")) {TransactionTypeUtils.setIOcome(ta, Tag.INCOME);}
+            else {TransactionTypeUtils.setIOcome(ta, Tag.UNKNOWN);}
         }
     }
 
     public static void readWECHATfile(String path) {
         readWECHATfile(new File(path));
+    }
+
+    public static void readWECHATfileByAI(String path) {
+        String result = DeepSeekClient.getAnswer(DeepSeekClient.WechatTransactionsReaderAIprompt + CsvTransactionDao.readCSVtoString(new File(path)), 8192);
+        // System.out.println(result);
+        CsvTransactionDao.readTransactionsFromCSV(CsvTransactionDao.readCSV(result), TransactionManager.getInstance().currentUser);
     }
 }
