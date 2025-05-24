@@ -30,7 +30,7 @@ public class LeftPanel extends JPanel {
 
         // 导航按钮配置
         String[] buttons = {
-            "home", "budget", "find", "user"
+            "budget", "charts", "find", "user"
         };
         
         // 动态生成导航按钮
