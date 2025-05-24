@@ -4,21 +4,30 @@ import cn.edu.bupt.utils.DateUtils;
 import java.util.HashSet;
 import java.util.*;
 
+/**
+ * Budget class represents a budget plan with amount, tags, and time range.
+ * 预算类表示具有金额、标签和时间范围的预算计划。
+ */
 public class Budget {
-    private User user;
-    private int amount; // 单位：分
-    private Set<Tag> tags;
-    private String startDateTime;
-    private String endDateTime;
-    private String description;
+    private User user;                  // Budget owner / 预算所有者
+    private int amount;                 // Budget amount in cents / 预算金额（单位：分）
+    private Set<Tag> tags;              // Tags associated with this budget / 与此预算关联的标签
+    private String startDateTime;       // Start date and time of the budget period / 预算周期的开始日期和时间
+    private String endDateTime;         // End date and time of the budget period / 预算周期的结束日期和时间
+    private String description;         // Budget description / 预算描述
     private static TransactionManager tm = TransactionManager.getInstance();
-    // private Frequency frequency;
 
-    // public enum Frequency {
-    //     ONCE,   // 单次
-    //     WEEKLY, // 每周循环
-    //     MONTHLY // 每月循环
-    // }
+    /**
+     * Creates a new budget with the specified parameters.
+     * 创建具有指定参数的新预算。
+     * 
+     * @param user Budget owner / 预算所有者
+     * @param amount Budget amount in cents / 预算金额（单位：分）
+     * @param tags List of tag names / 标签名称列表
+     * @param startDateTime Start date and time in "yyyy-MM-dd HH:mm:ss" format / 开始日期和时间，格式为"yyyy-MM-dd HH:mm:ss"
+     * @param endDateTime End date and time in "yyyy-MM-dd HH:mm:ss" format / 结束日期和时间，格式为"yyyy-MM-dd HH:mm:ss"
+     * @param description Budget description / 预算描述
+     */
 
     public Budget(User user, int amount, List<String> tags, String startDateTime, String endDateTime, String description) {
         validateParams(user, amount, startDateTime, endDateTime);
@@ -37,16 +46,16 @@ public class Budget {
         
         TransactionManager.getInstance().Budgets.add(this);
         user.getBudgets().add(this);
-    }
-
+    }    
+    
     private void validateParams(User user, int amount, String start, String end) {
-        if (user == null) throw new IllegalArgumentException("用户不能为空");
-        if (amount <= 0) throw new IllegalArgumentException("金额必须为正数");
+        if (user == null) throw new IllegalArgumentException("User cannot be null");
+        if (amount <= 0) throw new IllegalArgumentException("Amount must be positive");
         if (!DateUtils.isValidDatetime(start) || !DateUtils.isValidDatetime(end)) {
-            throw new IllegalArgumentException("时间格式无效");
+            throw new IllegalArgumentException("Invalid date time format");
         }
         if (DateUtils.compareDateTimes(start, end) > 0) {
-            throw new IllegalArgumentException("开始时间不能晚于结束时间");
+            throw new IllegalArgumentException("Start time cannot be later than end time");
         }
     }
 

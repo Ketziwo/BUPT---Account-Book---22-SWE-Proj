@@ -105,28 +105,6 @@ public class DeepSeekClient {
             return "请求异常: " + e.getMessage();
         }
     }
-
-    // private static void ask(String content){
-    //     // 创建消息列表
-    //     List<Message> messages = new ArrayList<>();
-    //     messages.add(new Message("user", content));
-
-    //     // 构建请求体
-    //     ChatRequest requestBody = new ChatRequest(
-    //             "deepseek-chat",  // 模型名称，根据文档调整
-    //             messages,
-    //             0.7,  // temperature
-    //             8192  // max_tokens
-    //     );
-    //     System.out.println(">>>正在提交问题...");
-    //     long startTime = System.currentTimeMillis();
-    //     // 发送请求
-    //     String response = sendRequest(requestBody);
-    //     long endTime = System.currentTimeMillis();
-    //     System.out.println("思考用时："+(endTime-startTime)/1000+"秒");
-    //     System.out.println("响应内容: " + response);
-    //     // TypewriterEffect.printWord(response,20);
-    // }
     
     public static String getAnswer(String content, int max_tokens) {
         // 创建消息列表

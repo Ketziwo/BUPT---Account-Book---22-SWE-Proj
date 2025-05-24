@@ -5,6 +5,8 @@ import java.util.Map;
 
 /**
  * Tag
+ * A class representing transaction tags.
+ * 表示交易标签的类。
  */
 public class Tag {
 
@@ -46,6 +48,7 @@ public class Tag {
     }
 
     static public Tag EXPENSE = new Tag("__EXPENSE__");
+
     static public Tag EXPENSE_CAR = new Tag("__EXPENSE_CAR__");
     static public Tag EXPENSE_CHILD = new Tag("__EXPENSE_CHILD__");
     static public Tag EXPENSE_CLOTH = new Tag("__EXPENSE_CLOTH__");
@@ -66,7 +69,9 @@ public class Tag {
     static public Tag EXPENSE_TRANSPORT = new Tag("__EXPENSE_TRANSPORT__");
     static public Tag EXPENSE_TRAVEL = new Tag("__EXPENSE_TRAVEL__");
     static public Tag EXPENSE_OTHERS = new Tag("__EXPENSE_OTHERS__");
+    
     static public Tag INCOME = new Tag("__INCOME__");
+
     static public Tag INCOME_HONGBAO = new Tag("__INCOME_HONGBAO__");
     static public Tag INCOME_SALARY = new Tag("__INCOME_SALARY__");
     static public Tag INCOME_STOCK = new Tag("__INCOME_STOCK__");
@@ -76,32 +81,32 @@ public class Tag {
     public static final Map<Tag,String> LABEL_MAP = new HashMap<>();
     static {
         // 支出分类（与Tag定义完全匹配）
-        LABEL_MAP.put(Tag.EXPENSE_CAR, "汽车");
-        LABEL_MAP.put(Tag.EXPENSE_CHILD, "育儿");
-        LABEL_MAP.put(Tag.EXPENSE_CLOTH, "服饰");
-        LABEL_MAP.put(Tag.EXPENSE_DEVICE, "数码");
-        LABEL_MAP.put(Tag.EXPENSE_ENTERTAINMENT, "娱乐");
-        LABEL_MAP.put(Tag.EXPENSE_FOOD, "餐饮");
-        LABEL_MAP.put(Tag.EXPENSE_GIFT, "礼物");
-        LABEL_MAP.put(Tag.EXPENSE_HOUSING, "住房");
-        LABEL_MAP.put(Tag.EXPENSE_INTERNET, "网络");
-        LABEL_MAP.put(Tag.EXPENSE_MAKEUP, "美妆");
-        LABEL_MAP.put(Tag.EXPENSE_MEDICAL, "医疗");
-        LABEL_MAP.put(Tag.EXPENSE_NECESSARY, "日用品");
-        LABEL_MAP.put(Tag.EXPENSE_PET, "宠物");
-        LABEL_MAP.put(Tag.EXPENSE_SNACK, "零食");
-        LABEL_MAP.put(Tag.EXPENSE_SPORT, "运动");
-        LABEL_MAP.put(Tag.EXPENSE_STUDY, "学习");
-        LABEL_MAP.put(Tag.EXPENSE_TABACCO_ALCOHOL, "烟酒");
-        LABEL_MAP.put(Tag.EXPENSE_TRANSPORT, "交通");
-        LABEL_MAP.put(Tag.EXPENSE_TRAVEL, "旅行");
-        LABEL_MAP.put(Tag.EXPENSE_OTHERS, "其他");
+        LABEL_MAP.put(Tag.EXPENSE_CAR, "car");
+        LABEL_MAP.put(Tag.EXPENSE_CHILD, "child");
+        LABEL_MAP.put(Tag.EXPENSE_CLOTH, "cloth");
+        LABEL_MAP.put(Tag.EXPENSE_DEVICE, "device");
+        LABEL_MAP.put(Tag.EXPENSE_ENTERTAINMENT, "entertainment");
+        LABEL_MAP.put(Tag.EXPENSE_FOOD, "food");
+        LABEL_MAP.put(Tag.EXPENSE_GIFT, "gift");
+        LABEL_MAP.put(Tag.EXPENSE_HOUSING, "housing");
+        LABEL_MAP.put(Tag.EXPENSE_INTERNET, "internet");
+        LABEL_MAP.put(Tag.EXPENSE_MAKEUP, "makeup");
+        LABEL_MAP.put(Tag.EXPENSE_MEDICAL, "medical");
+        LABEL_MAP.put(Tag.EXPENSE_NECESSARY, "necessary");
+        LABEL_MAP.put(Tag.EXPENSE_PET, "pet");
+        LABEL_MAP.put(Tag.EXPENSE_SNACK, "snack");
+        LABEL_MAP.put(Tag.EXPENSE_SPORT, "sport");
+        LABEL_MAP.put(Tag.EXPENSE_STUDY, "study");
+        LABEL_MAP.put(Tag.EXPENSE_TABACCO_ALCOHOL, "tabacco_alcohol");
+        LABEL_MAP.put(Tag.EXPENSE_TRANSPORT, "transport");
+        LABEL_MAP.put(Tag.EXPENSE_TRAVEL, "travel");
+        LABEL_MAP.put(Tag.EXPENSE_OTHERS, "others");
 
         // 收入分类
-        LABEL_MAP.put(Tag.INCOME_HONGBAO, "红包");
-        LABEL_MAP.put(Tag.INCOME_SALARY, "工资");
-        LABEL_MAP.put(Tag.INCOME_STOCK, "投资");
-        LABEL_MAP.put(Tag.INCOME_OTHERS, "其他");
+        LABEL_MAP.put(Tag.INCOME_HONGBAO, "hongbao");
+        LABEL_MAP.put(Tag.INCOME_SALARY, "salary");
+        LABEL_MAP.put(Tag.INCOME_STOCK, "stock");
+        LABEL_MAP.put(Tag.INCOME_OTHERS, "others");
     }
 }
 
