@@ -2,6 +2,8 @@ package cn.edu.bupt.model;
 
 import java.util.*;
 
+import cn.edu.bupt.utils.DateUtils;
+
 final public class TransactionManager {
 
     public User currentUser;
@@ -11,6 +13,7 @@ final public class TransactionManager {
     public final Set<Transaction> Transactions = new HashSet<Transaction>();
     public final Set<Tag> Tags = new HashSet<Tag>();
     public final Map<String, Tag> tagRegistry = new HashMap<String,Tag>();
+    public final Set<Budget> Budgets = new HashSet<>();
 
     // 储存默认Tag
     public final Set<Tag> expenseTags = new HashSet<Tag>();
@@ -22,30 +25,30 @@ final public class TransactionManager {
     public static TransactionManager getInstance() {
         if (INSTANCE==null) {
             INSTANCE = new TransactionManager();
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_CAR__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_CHILD__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_CLOTH__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_DEVICE__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_ENTERTAINMENT__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_FOOD__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_GIFT__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_HOUSING__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_INTERNET__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_MAKEUP__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_MEDICAL__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_NECESSARY__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_PET__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_SNACK__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_SPORT__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_STUDY__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_TABACCO_ALCOHOL__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_TRANSPORT__"));
-            INSTANCE.expenseTags.add(new Tag("__EXPENSE_TRAVEL__"));
-            INSTANCE.incomeTags.add(new Tag("__INCOME__"));
-            INSTANCE.incomeTags.add(new Tag("__INCOME_HONGBAO__"));
-            INSTANCE.incomeTags.add(new Tag("__INCOME_SALARY__"));
-            INSTANCE.incomeTags.add(new Tag("__INCOME_STOCK__"));
+            INSTANCE.expenseTags.add(Tag.EXPENSE_CAR);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_CHILD);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_CLOTH);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_DEVICE);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_ENTERTAINMENT);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_FOOD);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_GIFT);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_HOUSING);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_INTERNET);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_MAKEUP);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_MEDICAL);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_NECESSARY);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_PET);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_SNACK);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_SPORT);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_STUDY);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_TABACCO_ALCOHOL);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_TRANSPORT);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_TRAVEL);
+            INSTANCE.expenseTags.add(Tag.EXPENSE_OTHERS);
+            INSTANCE.incomeTags.add(Tag.INCOME_HONGBAO);
+            INSTANCE.incomeTags.add(Tag.INCOME_SALARY);
+            INSTANCE.incomeTags.add(Tag.INCOME_STOCK);
+            INSTANCE.incomeTags.add(Tag.INCOME_OTHERS);
         }
         return INSTANCE;
     }
@@ -87,11 +90,34 @@ final public class TransactionManager {
 
     // 查询方法
 
+    public Tag getTag(String tagStr) {
+        Tag t = tagRegistry.get(tagStr);
+        if(t==null){
+            System.out.println("创建了新的Tag"+tagStr);
+            return new Tag(tagStr);
+            
+        }
+        else return t;
+
+    }
+
+    public Set<Tag> getTags(Set<String> tagStrs) {
+        Set<Tag> result = new HashSet<Tag>();
+        for(String tagStr:tagStrs) {
+            Tag t;
+            if((t = getTag(tagStr)) != null) {
+                result.add(t);
+            }
+        }
+        return result;
+    }
+
     public Set<Tag> getTagsForTransaction(Transaction ta) {
         return ta.getTags();
     }
 
     public Set<Transaction> getTransactionByTag(Tag tag, Set<Transaction> tas) {
+        if(tag==null)return null;
         Set<Transaction> result = new HashSet<>();
         for(Transaction ta: tas) {
             if(ta.getTags().contains(tag)) {
@@ -101,21 +127,66 @@ final public class TransactionManager {
         return result;
     }
 
-    public Set<Transaction> getTransactionByTag(String tagStr, Set<Transaction> tas) {
-        if(tagRegistry.get(tagStr) != null) {
-            return getTransactionByTag(tagRegistry.get(tagStr), tas);
-        }
-        else {
-            return null;
-        }
+    public Set<Transaction> getTransactionByTag(String tagStr, Set<Transaction> transactions) {
+        return getTransactionByTag(getTag(tagStr), transactions);
     }
 
-    // public Set<Transaction> getTransactionByTag(Tag tag) {
-    //     return getTransactionByTag(tag, Transactions);
-    // }
-    // public Set<Transaction> getTransactionByTag(String tagStr) {
-    //     return getTransactionByTag(tagStr, Transactions);
-    // }
+    // 根据tag对交易进行筛选，isUnion为真时tag之间取并集，为假时取交集
+    public Set<Transaction> getTransactionsByTags(Set<Tag> tags, Set<Transaction> transactions, boolean isUnion) {
+        Set<Transaction> result = new HashSet<Transaction>();
 
+        if(isUnion) { // 并集
+            for(Tag tag:tags) {
+                result.addAll(getTransactionByTag(tag, transactions));
+            }
+        }
+        else { // 交集
+            result = transactions;
+            for(Tag tag:tags) {
+                result = getTransactionByTag(tag, result);
+            }
+        }
+        return result;
+    }
+
+    public int calculateAmount(Set<Transaction> transactions, Set<Tag> tags, String startdatetime, String enddatetime) {
+        Set<Transaction> tas = getTransactionsByTags(tags, transactions, true);
+        Set<Transaction> filtered = new HashSet<>();
+        for (Transaction ta : tas) {
+            if (DateUtils.isDateTimeInRange(ta.getDatetime(), startdatetime, enddatetime)) {
+                filtered.add(ta);
+            }
+        }
+        int sum = 0;
+        for (Transaction ta : filtered) {
+            sum += ta.getAmount();
+        }
+        return sum;
+    }
+
+    public int calculateAmount(Set<Transaction> transactions, Tag tag, String startdatetime, String enddatetime) {
+        Set<Tag> tags = new HashSet<Tag>();
+        tags.add(tag);
+        return calculateAmount(transactions, tags, startdatetime, enddatetime);
+    }
     
+    /**
+     * 根据预算设置计算相关交易总金额
+     * @param budget 预算对象
+     * @return 符合预算条件的交易总金额（单位：分）
+     */
+    public int calculateAmount(Budget budget) {
+        return calculateAmount(budget.getUser().getTransactions(), budget.getTags(), budget.getStartDateTime(), budget.getEndDateTime());
+    }
+
+    // 新增预算查询方法
+    public Set<Budget> getBudgetsByUser(User user) {
+        Set<Budget> result = new HashSet<>();
+        for (Budget budget : Budgets) {
+            if (budget.getUser().equals(user)) {
+                result.add(budget);
+            }
+        }
+        return result;
+    }
 }

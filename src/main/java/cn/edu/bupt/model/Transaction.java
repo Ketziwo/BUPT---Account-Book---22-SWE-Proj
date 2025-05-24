@@ -104,7 +104,7 @@ public class Transaction {
         this("", user, amount, datetime, "", "", description, tags);
     }
     public Transaction() {
-        this("", User.defaultUser, 0, "", "", "", "");
+        this("", TM.currentUser, 0, "", "", "", "");
     }
 
 

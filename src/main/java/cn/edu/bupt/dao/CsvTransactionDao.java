@@ -3,7 +3,6 @@ package cn.edu.bupt.dao;
 import cn.edu.bupt.model.*;
 
 import java.io.*;
-import java.security.spec.ECFieldF2m;
 import java.util.*;
 
 public final class CsvTransactionDao {
@@ -17,8 +16,11 @@ public final class CsvTransactionDao {
 		Set<User> users = readUsersFromCSV(allUsers);
 		for(User user: users){
 			// System.out.println(user.getname());
-			File tafile = new File(user.getpath());
-			readTransactionsFromCSV(tafile, user);
+			File Transactionfile = new File(user.getTransactionPATH());
+			readTransactionsFromCSV(Transactionfile, user);
+
+			File Budgetfile = new File(user.getBudgetPATH());
+			readBudgetsFromCSV(Budgetfile, user);
 		}
 	}
 
@@ -32,15 +34,33 @@ public final class CsvTransactionDao {
 			for(User user:TransactionManager.getInstance().Users) {
 				userLine = userLine.concat(user.getname()+","+user.getPwd()+"\n");
 
-				File userfile = new File("data/Transaction_"+user.getname()+".csv");
+				File Transactionfile = new File(user.getTransactionPATH());
+				File Budgetfile = new File(user.getBudgetPATH());
 				try{
-					userfile.createNewFile();
+					Transactionfile.createNewFile();
+					Budgetfile.createNewFile();
 				} catch(Exception e){}
-				writeTransactionsToCSV(userfile, user.getTransactions());
+				writeTransactionsToCSV(Transactionfile, user.getTransactions());
+				writeBudgetsToCSV(Budgetfile, user.getBudgets());
 			}
 			userbw.write(userLine);
 			userbw.close();
 		} catch(Exception e){}
+	}
+
+	public static String readCSVtoString(File file) {
+		try {
+			FileReader filereader = new FileReader(file);
+			BufferedReader bufferedreader = new BufferedReader(filereader);
+
+			String line, result = "";
+			while ((line = bufferedreader.readLine()) != null) {
+				result += line;
+			}
+
+			bufferedreader.close();
+			return result;
+		} catch(Exception e) {return null;}
 	}
 
 	public static ArrayList<String[]> readCSV(File file) {
@@ -63,6 +83,40 @@ public final class CsvTransactionDao {
 		}
 	}
 
+	public static ArrayList<String[]> readCSV(String csvString) {
+        ArrayList<String[]> result = new ArrayList<>();
+        
+        if (csvString == null || csvString.isEmpty()) {
+            return result;
+        }
+        
+        // 按行分割字符串
+        String[] lines = csvString.split("\n");
+        
+        // 处理每一行
+        for (String line : lines) {
+            // 跳过空行
+            if (line.trim().isEmpty()) {
+                continue;
+            }
+            
+            // 按逗号分割行，保留引号内的内容
+            String[] fields = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+            
+            // 去除每个字段的首尾空格和可能的引号
+            for (int i = 0; i < fields.length; i++) {
+                fields[i] = fields[i].trim();
+                if (fields[i].startsWith("\"") && fields[i].endsWith("\"")) {
+                    fields[i] = fields[i].substring(1, fields[i].length() - 1);
+                }
+            }
+            
+            result.add(fields);
+        }
+        
+        return result;
+    }
+
 	public static Set<User> readUsersFromCSV(File file) {
 		Set<User> users = new HashSet<>();
 		List<String[]> csv = readCSV(file); // 假设该方法正确读取文件所有行
@@ -84,32 +138,73 @@ public final class CsvTransactionDao {
 		return users;
 	}
 
+	public static void readTransactionsFromCSV(List<String[]> csv, User user) {
+		csv.remove(0);
+		for (String[] parts:csv) { // Skip the header
+			// String line = csv.get(i);
+			// String[] parts = line.split(",");
+			if (parts.length >= 7) {
+				String tid = parts[0];
+				int amount = 0;
+				amount = Integer.parseInt(parts[1]);
+					
+				String datetime = parts[2];
+				String create_at = parts[3];
+				String modified_at = parts[4];
+				String description = parts[5];
+				String[] tagParts = parts[6].split("\\|");
+				ArrayList<String> tags = new ArrayList<>();
+				for (String tag : tagParts) {
+					tags.add(tag);
+				}
+				Transaction transaction = new Transaction(tid, user, amount, datetime, create_at, modified_at, description, tags);
+				TransactionManager.getInstance().Transactions.add(transaction);
+			}
+		}
+	}
+
 	public static void readTransactionsFromCSV(File file, User user) {
 		List<String[]> csv = readCSV(file);
 		if (csv != null) {
-			csv.remove(0);
-			for (String[] parts:csv) { // Skip the header
-				// String line = csv.get(i);
-				// String[] parts = line.split(",");
-				if (parts.length >= 7) {
-					String tid = parts[0];
-					int amount = 0;
-					amount = Integer.parseInt(parts[1]);
-					
-					String datetime = parts[2];
-					String create_at = parts[3];
-					String modified_at = parts[4];
-					String description = parts[5];
-					String[] tagParts = parts[6].split("\\|");
-					ArrayList<String> tags = new ArrayList<>();
-					for (String tag : tagParts) {
-						tags.add(tag);
-					}
-					Transaction transaction = new Transaction(tid, user, amount, datetime, create_at, modified_at, description, tags);
-					TransactionManager.getInstance().Transactions.add(transaction);
+			readTransactionsFromCSV(csv, user);
+		}
+	}
+
+	public static void readBudgetsFromCSV(List<String[]> csv, User user) {
+		csv.remove(0); // 跳过表头
+		for (String[] parts : csv) {
+			try {
+				if (parts.length < 4) continue;
+
+				// 解析数值型字段
+				int amount = Integer.parseInt(parts[0].trim());
+				
+				// 解析时间字段
+				String start = parts[1].trim();
+				String end = parts[2].trim();
+
+				String description = parts[3].trim();
+				
+				// 解析标签集合
+				ArrayList<String> tags = new ArrayList<>();
+				for (String tagName : parts[4].split("\\|")) {
+					tags.add(tagName); // 假设Tag构造函数支持名称创建
 				}
+
+				// 自动加入TransactionManager（通过构造函数）
+				new Budget(user, amount, tags, start, end, description);
+				
+			} catch (Exception e) {
+				System.err.println("解析预算数据失败: " + Arrays.toString(parts));
 			}
 		}
+	}
+
+	public static void readBudgetsFromCSV(File file, User user) {
+		List<String[]> csv = readCSV(file);
+		if (csv == null || csv.isEmpty()) return;
+
+		readBudgetsFromCSV(csv, user);
 	}
 
 	public static void writeTransactionsToCSV(File file, Set<Transaction> tas) {
@@ -125,6 +220,25 @@ public final class CsvTransactionDao {
 						t.getModifiedTime() + "," +
 						t.getDescription() + "," +
 						String.join("|", t.getTags().stream().map(Tag::getName).toArray(String[]::new)) + "\n";
+				bw.write(line);
+			}
+			bw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void writeBudgetsToCSV(File file, Set<Budget> bgs) {
+		try {
+			FileWriter filewriter = new FileWriter(file); // Overwrite the file
+			BufferedWriter bw = new BufferedWriter(filewriter);
+			bw.write("amount,starttime,endtime,description,tags\n");
+			for (Budget b : bgs) {
+				String line = b.getAmount() + "," +
+						b.getStartDateTime() + "," +
+						b.getEndDateTime() + "," +
+						b.getDescription() + "," +
+						String.join("|", b.getTags().stream().map(Tag::getName).toArray(String[]::new)) + "\n";
 				bw.write(line);
 			}
 			bw.close();
