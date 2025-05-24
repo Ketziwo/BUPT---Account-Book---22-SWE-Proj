@@ -1,14 +1,20 @@
 package cn.edu.bupt.view;
 
 import javax.swing.*;
+
+import cn.edu.bupt.utils.DateUtils;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.function.Consumer;
+import java.util.Date;
 
 public class FilterDialog extends JDialog {
     private final JTextField descriptionField = new JTextField(15);
-    private final JTextField startDateField = new JTextField(8);
-    private final JTextField endDateField = new JTextField(8);
+    private final JSpinner startDatetimeSpinner = DateUtils.createDatetimeSpinner();
+    private final JSpinner endDatetimeSpinner = DateUtils.createDatetimeSpinner();
+    // private final JTextField startDateField = new JTextField(8);
+    // private final JTextField endDateField = new JTextField(8);
     private final JTextField minAmountField = new JTextField(8);
     private final JTextField maxAmountField = new JTextField(8);
 
@@ -27,10 +33,10 @@ public class FilterDialog extends JDialog {
         mainPanel.add(descriptionField);
         
         mainPanel.add(new JLabel("开始日期 (YYYY-MM-DD):"));
-        mainPanel.add(startDateField);
+        mainPanel.add(startDatetimeSpinner);
         
         mainPanel.add(new JLabel("结束日期 (YYYY-MM-DD):"));
-        mainPanel.add(endDateField);
+        mainPanel.add(endDatetimeSpinner);
         
         mainPanel.add(new JLabel("最小金额:"));
         mainPanel.add(minAmountField);
@@ -58,8 +64,8 @@ public class FilterDialog extends JDialog {
     private FilterCriteria getFilterCriteria() {
         return new FilterCriteria(
             descriptionField.getText().trim(),
-            startDateField.getText().trim(),
-            endDateField.getText().trim(),
+            DateUtils.getDatetime((Date) startDatetimeSpinner.getValue()),
+            DateUtils.getDatetime((Date) endDatetimeSpinner.getValue()),
             parseDouble(minAmountField.getText().trim()),
             parseDouble(maxAmountField.getText().trim())
         );

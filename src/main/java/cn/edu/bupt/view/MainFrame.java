@@ -11,11 +11,10 @@ public class MainFrame extends JFrame{
     private CardLayout cardLayout;
     private JPanel mainContentPanel;
     public LeftPanel leftPanel;
-    public ManagerPanel managerPanel;
 
     public MainFrame(Object lock) {
         setTitle("智能账单管理");
-        setSize(700, 500);
+        setSize(800, 500);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null); // 居中显示[4](@ref)
         setResizable(false); // 允许窗口调整大小
@@ -37,9 +36,9 @@ public class MainFrame extends JFrame{
         mainContentPanel.setPreferredSize(new Dimension(getWidth() - 150, getHeight()));
         
         // 4. 预加载所有功能面板
-        // mainContentPanel.add(new HomePanel(), "首页");
-        // mainContentPanel.add(new BudgetPanel(), "预算");
-        mainContentPanel.add(managerPanel = new ManagerPanel(), "find");
+        mainContentPanel.add(new BudgetPanel(), "budget");
+        mainContentPanel.add(new ChartsPanel(), "charts");
+        mainContentPanel.add(new ManagerPanel(), "find");
         mainContentPanel.add(new SettingsPanel(this), "user");
         
         layeredPane.add(mainContentPanel, BorderLayout.CENTER);
