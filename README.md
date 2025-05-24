@@ -129,6 +129,8 @@ data/                                 # Data file directory
 resources/                            # Resource file directory  
 ```  
 
+=======
+
 # 智能账单管理系统
 
 ## 项目概述
@@ -259,12 +261,3 @@ src/
 data/                                 # 数据文件目录
 resources/                            # 资源文件目录
 ```
-
-## 开发团队
-- [戴昊]
-- [钱奕霖]
-- [周炀]
-- [王昊]
-- [关敏哲]
-- [文浩东]
-- ...
