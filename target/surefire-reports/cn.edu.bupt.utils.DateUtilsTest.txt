@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
-Test set: cn.edu.bupt.AppTest
+Test set: cn.edu.bupt.utils.DateUtilsTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.083 s -- in cn.edu.bupt.AppTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.296 s -- in cn.edu.bupt.utils.DateUtilsTest
