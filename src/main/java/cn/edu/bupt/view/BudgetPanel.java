@@ -18,24 +18,24 @@ public class BudgetPanel extends JPanel {
         setLayout(new BorderLayout(5, 5));
         initializeComponents();
         loadData();
-    }
-
+    }    
+    
     private void initializeComponents() {
-        // 工具栏面板
+        // Toolbar panel / 工具栏面板
         JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         toolBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         
-        // 添加新按钮
-        JButton addButton = new JButton("添加/修改预算");
+        // Add new budget button / 添加新按钮
+        JButton addButton = new JButton("Add/Modify Budget");
         addButton.addActionListener(e -> showAddDialog());
         toolBar.add(addButton);
         
-        // 刷新按钮
-        refreshButton = new JButton("刷新");
+        // Refresh button / 刷新按钮
+        refreshButton = new JButton("Refresh");
         refreshButton.addActionListener(e -> refresh());
         
-        // 状态标签
-        statusLabel = new JLabel("就绪");
+        // Status label / 状态标签
+        statusLabel = new JLabel("Ready");
         statusLabel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         
         toolBar.add(refreshButton);
@@ -55,9 +55,8 @@ public class BudgetPanel extends JPanel {
         
         TableColumnModel columnModel = budgetTable.getColumnModel();
         columnModel.getColumn(6).setCellRenderer(new ProgressBarRenderer());
-
         JScrollPane scrollPane = new JScrollPane(budgetTable);
-        scrollPane.setBorder(BorderFactory.createTitledBorder("预算列表"));
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Budget List"));
         add(scrollPane, BorderLayout.CENTER);
     }
 
@@ -81,19 +80,19 @@ public class BudgetPanel extends JPanel {
                 // 创建新集合确保数据更新
                 Set<Budget> budgets = new HashSet<>(tm.currentUser.getBudgets()); 
                 tableModel.setBudgets(budgets);
-                statusLabel.setText("加载完成 - 共 " + budgets.size() + " 条预算");
+                statusLabel.setText("Loading complete - " + budgets.size() + " budgets");
             } else {
-                statusLabel.setText("未登录用户");
+                statusLabel.setText("No user logged in");
             }
         } catch (Exception ex) {
-            showError("数据加载失败: " + ex.getMessage());
+            showError("Data loading failed: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
-
+    
     public void refresh() {
         refreshButton.setEnabled(false);
-        statusLabel.setText("正在刷新数据...");
+        statusLabel.setText("Refreshing data...");
         
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
             @Override
@@ -107,9 +106,9 @@ public class BudgetPanel extends JPanel {
                 try {
                     get();
                     budgetTable.updateUI();
-                    statusLabel.setText("刷新完成 - " + new Date());
+                    statusLabel.setText("Refresh complete - " + new Date());
                 } catch (Exception ex) {
-                    showError("刷新失败: " + ex.getMessage());
+                    showError("Refresh failed: " + ex.getMessage());
                 } finally {
                     refreshButton.setEnabled(true);
                 }
@@ -117,23 +116,21 @@ public class BudgetPanel extends JPanel {
         };
         worker.execute();
     }
-
+    
     private void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "错误", 
+        JOptionPane.showMessageDialog(this, message, "Error", 
             JOptionPane.ERROR_MESSAGE);
     }
 
     
-
-
-    // 自定义表格模型
+    // Custom table model for displaying budget data / 自定义表格模型，用于显示预算数据
     private class BudgetTableModel extends AbstractTableModel {
         private List<Budget> budgetList = new ArrayList<>(); 
-        private List<Integer> usedAmounts = new ArrayList<>();
+        private List<Integer> usedAmounts = new ArrayList<>();        
         private final String[] columnNames = {
-            "描述", "开始时间", "结束时间", 
-            "预算金额", "已用金额", 
-            "剩余金额", "进度"
+            "Description", "Start Date", "End Date", 
+            "Budget Amount", "Used Amount", 
+            "Remaining", "Progress"
         };
 
         public void setBudgets(Set<Budget> budgets) {
@@ -193,9 +190,9 @@ public class BudgetPanel extends JPanel {
             if (total == 0) return 0.0;
             return Math.min((double) used / total, 1.0);
         }
-    }
-
-    // 进度条渲染器
+    }    
+    
+    // Progress bar renderer for displaying budget usage progress / 进度条渲染器，用于显示预算使用进度
     private static class ProgressBarRenderer extends JProgressBar implements TableCellRenderer {
         public ProgressBarRenderer() {
             super(0, 100);
@@ -211,24 +208,22 @@ public class BudgetPanel extends JPanel {
             
             double progress = (value instanceof Double) ? 
                 (Double) value * 100 : 0.0;
-            int progressValue = (int) Math.round(progress);
-
-            // 设置进度条值
+            int progressValue = (int) Math.round(progress);// Set progress bar value / 设置进度条值
             setValue(progressValue >= 0 ? progressValue : 0);
             
-            // 设置颜色和文本
+            // Set color and text / 设置颜色和文本
             if (progress > 100) {
-                setForeground(new Color(200, 0, 0)); // 深红
-                setString(String.format("超额 %.1f%%", progress));
+                setForeground(new Color(200, 0, 0)); // Dark red / 深红
+                setString(String.format("Exceeded %.1f%%", progress));
             } else if (progress > 80) {
-                setForeground(new Color(255, 153, 0)); // 橙色
+                setForeground(new Color(255, 153, 0)); // Orange / 橙色
                 setString(progressValue + "%");
             } else {
-                setForeground(new Color(0, 153, 0)); // 深绿
+                setForeground(new Color(0, 153, 0)); // Dark green / 深绿
                 setString(progressValue + "%");
             }
 
-            // 设置背景色
+            // Set background color / 设置背景色
             if (isSelected) {
                 setBackground(table.getSelectionBackground());
             } else {

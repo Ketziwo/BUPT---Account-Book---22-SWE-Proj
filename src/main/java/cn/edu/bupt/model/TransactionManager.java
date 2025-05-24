@@ -8,6 +8,7 @@ final public class TransactionManager {
 
     public User currentUser;
 
+    // Store global Transaction and Tag objects
     // 存储全局Transaction和Tag对象
     public final Set<User> Users = new HashSet<User>();
     public final Set<Transaction> Transactions = new HashSet<Transaction>();
@@ -15,10 +16,12 @@ final public class TransactionManager {
     public final Map<String, Tag> tagRegistry = new HashMap<String,Tag>();
     public final Set<Budget> Budgets = new HashSet<>();
 
+    // Store default Tags
     // 储存默认Tag
     public final Set<Tag> expenseTags = new HashSet<Tag>();
     public final Set<Tag> incomeTags = new HashSet<Tag>();
 
+    // Singleton implementation
     // 单例实现
     private static TransactionManager INSTANCE;
     private TransactionManager() {}
@@ -51,14 +54,16 @@ final public class TransactionManager {
             INSTANCE.incomeTags.add(Tag.INCOME_OTHERS);
         }
         return INSTANCE;
-    }
-
+    }    
+    // Core operation methods
     // 核心操作方法
 
     /**
-     * 给交易添加一个标签
-     * @param ta 交易
-     * @param tag 标签
+     * Add a tag to a transaction.
+     * 给交易添加一个标签。
+     * 
+     * @param ta Transaction / 交易
+     * @param tag Tag / 标签
      */
     public void addTagToTA(Transaction ta, Tag tag) {
         ta.getTags().add(tag);
@@ -70,12 +75,14 @@ final public class TransactionManager {
         else {
             addTagToTA(ta, new Tag(tagStr));
         }
-    }
-
+    }    
+    
     /**
-     * 给交易移去该标签
-     * @param ta 交易
-     * @param tag 标签
+     * Remove the tag from the transaction.
+     * 给交易移去该标签。
+     * 
+     * @param ta Transaction / 交易
+     * @param tag Tag / 标签
      */
     public void removeTagFromTA(Transaction ta, Tag tag) {
         if(ta.getTags().contains(tag)) {
@@ -88,6 +95,7 @@ final public class TransactionManager {
         }
     }
 
+    // Query methods
     // 查询方法
 
     public Tag getTag(String tagStr) {
@@ -169,16 +177,18 @@ final public class TransactionManager {
         tags.add(tag);
         return calculateAmount(transactions, tags, startdatetime, enddatetime);
     }
-    
-    /**
-     * 根据预算设置计算相关交易总金额
-     * @param budget 预算对象
-     * @return 符合预算条件的交易总金额（单位：分）
+      /**
+     * Calculate the total amount of transactions related to a budget.
+     * 根据预算设置计算相关交易总金额。
+     * 
+     * @param budget Budget object / 预算对象
+     * @return Total amount of transactions matching the budget criteria (unit: cents) / 符合预算条件的交易总金额（单位：分）
      */
     public int calculateAmount(Budget budget) {
         return calculateAmount(budget.getUser().getTransactions(), budget.getTags(), budget.getStartDateTime(), budget.getEndDateTime());
     }
 
+    // New budget query methods
     // 新增预算查询方法
     public Set<Budget> getBudgetsByUser(User user) {
         Set<Budget> result = new HashSet<>();

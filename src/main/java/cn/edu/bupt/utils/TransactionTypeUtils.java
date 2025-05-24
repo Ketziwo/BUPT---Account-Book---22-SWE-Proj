@@ -8,7 +8,7 @@ public final class TransactionTypeUtils {
 
     public static void setIOcome(Transaction ta, Tag tag) {
 
-        System.out.println(tag.getName());
+        // System.out.println(tag.getName());
 
         // tag只能输入收入支出未知三种
         if(tag != Tag.EXPENSE && tag != Tag.INCOME && tag != Tag.UNKNOWN) {

@@ -12,34 +12,38 @@ public class DateUtils {
     private final static String DATETIMEPATTERN = "yyyy-MM-dd HH:mm:ss";
 
     // 线程安全的日期格式容器
-    private static final ThreadLocal<SimpleDateFormat> DATE_FORMATTER = 
-        ThreadLocal.withInitial(() -> new SimpleDateFormat(DATEPATTERN));
+    private static final ThreadLocal<SimpleDateFormat> DATE_FORMATTER = ThreadLocal.withInitial(() -> new SimpleDateFormat(DATEPATTERN));
     
-    private static final ThreadLocal<SimpleDateFormat> DATETIME_FORMATTER =
-        ThreadLocal.withInitial(() -> new SimpleDateFormat(DATETIMEPATTERN));
-
+    private static final ThreadLocal<SimpleDateFormat> DATETIME_FORMATTER = ThreadLocal.withInitial(() -> new SimpleDateFormat(DATETIMEPATTERN));    
+    
     /**
+     * Get current date string (thread-safe)
      * 获取当前日期字符串（线程安全）
-     * @return yyyy-MM-dd 格式的日期
+     * 
+     * @return Date in yyyy-MM-dd format / yyyy-MM-dd 格式的日期
      */
     public static String getDate() {
         return DATE_FORMATTER.get().format(new Date());
-    }
-
+    }    
+    
     /**
+     * Get current complete date and time (thread-safe)
      * 获取当前完整日期时间（线程安全）
-     * @return yyyy-MM-dd HH:mm:ss 格式的时间
+     * 
+     * @return Time in yyyy-MM-dd HH:mm:ss format / yyyy-MM-dd HH:mm:ss 格式的时间
      */
     public static String getDatetime() {
         return getDatetime(new Date());
     }
     public static String getDatetime(Date d) {
         return DATETIME_FORMATTER.get().format(d);
-    }
-
+    }    
+    
     /**
+     * Validate date string
      * 验证日期字符串有效性
-     * @param dateStr 需要验证的字符串
+     * 
+     * @param dateStr String to validate / 需要验证的字符串
      */
     public static boolean isValidDate(String dateStr) {
         try {

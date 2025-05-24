@@ -12,6 +12,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Dialog for creating and editing budget entries
+ * 用于创建和编辑预算项目的对话框
+ */
 public class BudgetDialog extends JDialog {
     private boolean confirmed = false;
     private boolean isCreating = true;
@@ -25,8 +29,12 @@ public class BudgetDialog extends JDialog {
 
     private final TransactionManager TM = TransactionManager.getInstance();
 
+    /**
+     * Constructor for editing an existing budget
+     * 用于编辑现有预算的构造函数
+     */
     public BudgetDialog(Frame parent, Budget b) {
-        super(parent, "修改预算", true);
+        super(parent, "Modify Budget", true);
         this.budget = b;
         this.isCreating = false;
         initializeUI();
@@ -34,13 +42,21 @@ public class BudgetDialog extends JDialog {
         setLocationRelativeTo(parent);
     }
 
+    /**
+     * Constructor for creating a new budget
+     * 用于创建新预算的构造函数
+     */
     public BudgetDialog(Frame parent) {
-        super(parent, "添加预算", true);
+        super(parent, "Add Budget", true);
         initializeUI();
         setSize(400, 250);
         setLocationRelativeTo(parent);
     }
 
+    /**
+     * Initializes the UI components for the dialog
+     * 初始化对话框的UI组件
+     */
     private void initializeUI() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -59,25 +75,25 @@ public class BudgetDialog extends JDialog {
         }
 
         JPanel inputPanel = new JPanel(new GridLayout(5, 2, 5, 10));
-        inputPanel.add(new JLabel("描述:"));
+        inputPanel.add(new JLabel("Description:"));
         inputPanel.add(descriptionField);
-        inputPanel.add(new JLabel("开始日期:"));
+        inputPanel.add(new JLabel("Start Date:"));
         inputPanel.add(startDateSpinner);
-        inputPanel.add(new JLabel("结束日期:"));
+        inputPanel.add(new JLabel("End Date:"));
         inputPanel.add(endDateSpinner);
-        inputPanel.add(new JLabel("预算金额:"));
+        inputPanel.add(new JLabel("Budget Amount:"));
         inputPanel.add(amountField);
-        inputPanel.add(new JLabel("自定义Tag:"));
+        inputPanel.add(new JLabel("Custom Tags:"));
         inputPanel.add(customTagField);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton confirmButton = new JButton("确认");
+        JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(e -> onConfirm());
-        JButton cancelButton = new JButton("取消");
+        JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(e -> onCancel());
 
         if(!isCreating) {
-            JButton deleteButton = new JButton("删除");
+            JButton deleteButton = new JButton("Delete");
             deleteButton.addActionListener(e -> onDelete());
             buttonPanel.add(deleteButton);
         }
@@ -90,31 +106,36 @@ public class BudgetDialog extends JDialog {
         add(mainPanel);
     }
 
+    /**
+     * Creates or updates a Budget object from input fields
+     * 从输入字段创建或更新预算对象
+     * @throws IllegalArgumentException if input validation fails
+     */
     private void createBudgetFromInput() {
-        // 验证描述
+        // Validate description / 验证描述
         String description = descriptionField.getText().trim();
         if (description.isEmpty()) {
-            throw new IllegalArgumentException("描述不能为空");
+            throw new IllegalArgumentException("Description cannot be empty");
         }
 
-        // 获取并验证日期
+        // Get and validate dates / 获取并验证日期
         String start = DateUtils.getDatetime((Date) startDateSpinner.getValue());
         String end = DateUtils.getDatetime((Date) endDateSpinner.getValue());
 
-        // 验证金额
+        // Validate amount / 验证金额
         String amountText = amountField.getText().trim();
         if (amountText.isEmpty()) {
-            throw new IllegalArgumentException("金额不能为空");
+            throw new IllegalArgumentException("Amount cannot be empty");
         }
         
         int amount;
         try {
             amount = (int)Math.round(Double.parseDouble(amountText) * 100);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("金额必须为整数");
+            throw new IllegalArgumentException("Amount must be a number");
         }
         if (amount <= 0) {
-            throw new IllegalArgumentException("金额必须大于0");
+            throw new IllegalArgumentException("Amount must be greater than 0");
         }
 
         User currentUser = TransactionManager.getInstance().currentUser;
@@ -142,6 +163,10 @@ public class BudgetDialog extends JDialog {
         }
     }
 
+    /**
+     * Handles the confirm button action
+     * 处理确认按钮操作
+     */
     private void onConfirm() {
         try {
             createBudgetFromInput();
@@ -149,18 +174,26 @@ public class BudgetDialog extends JDialog {
             dispose();
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), 
-                "输入错误", JOptionPane.ERROR_MESSAGE);
+                "Input Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Handles the cancel button action
+     * 处理取消按钮操作
+     */
     private void onCancel() {
         confirmed = false;
         dispose();
     }
 
+    /**
+     * Handles the delete button action
+     * 处理删除按钮操作
+     */
     private void onDelete() {
         int result = JOptionPane.showConfirmDialog(this, 
-            "确定要删除这个预算吗？", "确认删除", 
+            "Are you sure you want to delete this budget?", "Confirm Deletion", 
             JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (result == JOptionPane.YES_OPTION) {
             TransactionManager.getInstance().currentUser.getBudgets().remove(this.budget);
