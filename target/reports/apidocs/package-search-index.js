@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"cn.edu.bupt"},{"l":"cn.edu.bupt.dao"},{"l":"cn.edu.bupt.model"},{"l":"cn.edu.bupt.utils"},{"l":"cn.edu.bupt.view"}];updateSearchResults();
