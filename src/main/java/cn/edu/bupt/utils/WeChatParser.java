@@ -6,8 +6,28 @@ import java.util.*;
 import cn.edu.bupt.dao.*;
 import cn.edu.bupt.model.*;
 
-public final class WeChatParser {
-
+/**
+ * Utility class for parsing WeChat payment CSV export files.
+ * This class provides methods to read and process WeChat transaction records,
+ * converting them into Transaction objects in the account book system.
+ * 
+ * The class supports both direct CSV parsing and AI-assisted parsing for
+ * more complex or irregular export formats.
+ * 
+ * @author BUPT Account Book Team
+ * @version 1.0
+ */
+public final class WeChatParser {    
+    /**
+     * Parses a WeChat payment CSV export file and creates Transaction objects.
+     * The method expects a specific CSV format from WeChat payment exports,
+     * with transaction data starting from line 17.
+     * 
+     * Transactions are automatically categorized as income or expense based on
+     * the information in the CSV file, and tagged with "WECHAT" for tracking.
+     * 
+     * @param file The WeChat payment CSV export file to parse
+     */
     public static void readWECHATfile(File file) {
         List<String[]> lines = CsvTransactionDao.readCSV(file);
 
@@ -32,12 +52,23 @@ public final class WeChatParser {
             else if (line[4].equals("\"收入\"")) {TransactionTypeUtils.setIOcome(ta, Tag.INCOME);}
             else {TransactionTypeUtils.setIOcome(ta, Tag.UNKNOWN);}
         }
-    }
-
+    }    
+    /**
+     * Overloaded method to parse a WeChat payment CSV export file by path.
+     * 
+     * @param path The file path to the WeChat payment CSV export file
+     */
     public static void readWECHATfile(String path) {
         readWECHATfile(new File(path));
     }
 
+    /**
+     * Parses a WeChat payment CSV export file using AI assistance.
+     * This method uses the DeepSeekClient to process potentially complex
+     * or irregular formats that the standard parser might not handle correctly.
+     * 
+     * @param path The file path to the WeChat payment CSV export file
+     */
     public static void readWECHATfileByAI(String path) {
         String result = DeepSeekClient.getAnswer(DeepSeekClient.WechatTransactionsReaderAIprompt + CsvTransactionDao.readCSVtoString(new File(path)), 8192);
         // System.out.println(result);

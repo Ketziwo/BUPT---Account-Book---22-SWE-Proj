@@ -119,3 +119,125 @@ AIAdvisor --> TransactionManager
 WeChatParser --> TransactionManager
 
 @enduml
+=======
+@startuml
+' Project Structure PlantUML Diagram (with color and style)
+' Define skinparams for style
+skinparam class {
+    BackgroundColor White
+    ArrowColor Black
+    BorderColor Black
+    FontSize 13
+}
+skinparam package {
+    BackgroundColor #F5F5F5
+    BorderColor #888888
+}
+skinparam Arrow {
+    Color #2D6CDF
+    Thickness 2
+}
+
+' Class color stereotypes
+class App <<entrypoint>> #FFEECC
+package dao #E3F2FD {
+    class CsvTransactionDao #B3E5FC
+    class DeepSeekClient #B3E5FC
+}
+package model #FFF9C4 {
+    class Budget #FFF59D {
+      - amount: int
+      - tags: Set<Tag>
+      - startDateTime: String
+      - endDateTime: String
+      - description: String
+      - user: User
+    }
+    class Tag #FFD54F {
+      - name: String
+      - type: String
+    }
+    class Transaction #FFE082 {
+      - id: int
+      - amount: int
+      - datetime: String
+      - description: String
+      - tags: Set<Tag>
+      - user: User
+    }
+    class TransactionManager <<singleton>> #FFF176 {
+      - Users: List<User>
+      - Budgets: List<Budget>
+      - Transactions: List<Transaction>
+      - currentUser: User
+    }
+    class User #FFD180 {
+      - name: String
+      - password: String
+      - Budgets: Set<Budget>
+      - Transactions: Set<Transaction>
+    }
+}
+package utils #E1F5FE {
+    class DateUtils #B3E5FC
+    class TransactionTypeUtils #B3E5FC
+    class AIAdvisor #B3E5FC
+    class WeChatParser #B3E5FC
+}
+package view #F3E5F5 {
+    class MainFrame #CE93D8
+    class LeftPanel #CE93D8
+    class ManagerPanel #CE93D8
+    class BudgetPanel #CE93D8
+    class ChartsPanel #CE93D8
+    class SettingsPanel #CE93D8
+    class BudgetDialog #E1BEE7
+    class TransactionDialog #E1BEE7
+    class FilterDialog #E1BEE7
+}
+
+' Main dependencies
+App --> CsvTransactionDao : read CSV
+App --> TransactionManager : manage transactions
+App --> User : define default user
+App --> MainFrame : launch UI
+
+MainFrame --> LeftPanel
+MainFrame --> ManagerPanel
+MainFrame --> BudgetPanel
+MainFrame --> ChartsPanel
+MainFrame --> SettingsPanel
+
+ManagerPanel --> Transaction
+ManagerPanel --> TransactionManager
+BudgetPanel --> Budget
+BudgetPanel --> TransactionManager
+ChartsPanel --> TransactionManager
+SettingsPanel --> User
+SettingsPanel --> WeChatParser
+SettingsPanel --> AIAdvisor
+
+TransactionManager --> Transaction
+TransactionManager --> Budget
+TransactionManager --> User
+TransactionManager --> Tag
+
+Budget --> User
+Budget --> Tag
+Transaction --> Tag
+Transaction --> User
+User --> Budget
+User --> Transaction
+
+CsvTransactionDao --> Transaction
+CsvTransactionDao --> User
+DeepSeekClient --> Transaction
+DeepSeekClient --> Tag
+
+' Utility dependencies
+Budget --> DateUtils
+TransactionTypeUtils --> Transaction
+AIAdvisor --> TransactionManager
+WeChatParser --> TransactionManager
+
+@enduml

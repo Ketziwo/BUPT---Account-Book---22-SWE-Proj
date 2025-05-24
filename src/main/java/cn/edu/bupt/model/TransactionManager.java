@@ -4,27 +4,51 @@ import java.util.*;
 
 import cn.edu.bupt.utils.DateUtils;
 
+/**
+ * Transaction Manager class that serves as the central data manager for the application.
+ * Implements the Singleton pattern to ensure a single global instance.
+ * Manages all transactions, users, tags, and budgets in the system.
+ */
 final public class TransactionManager {
 
+    /** Current logged-in user */
     public User currentUser;
 
-    // Store global Transaction and Tag objects
-    // 存储全局Transaction和Tag对象
+    /** Set of all users in the system */
     public final Set<User> Users = new HashSet<User>();
+    
+    /** Set of all transactions in the system */
     public final Set<Transaction> Transactions = new HashSet<Transaction>();
+    
+    /** Set of all tags in the system */
     public final Set<Tag> Tags = new HashSet<Tag>();
+    
+    /** Map of tag names to tag objects for quick lookup */
     public final Map<String, Tag> tagRegistry = new HashMap<String,Tag>();
+    
+    /** Set of all budgets in the system */
     public final Set<Budget> Budgets = new HashSet<>();
 
-    // Store default Tags
-    // 储存默认Tag
+    /** Set of expense category tags */
     public final Set<Tag> expenseTags = new HashSet<Tag>();
+    
+    /** Set of income category tags */
     public final Set<Tag> incomeTags = new HashSet<Tag>();
 
     // Singleton implementation
-    // 单例实现
     private static TransactionManager INSTANCE;
+    
+    /**
+     * Private constructor to enforce Singleton pattern
+     */
     private TransactionManager() {}
+    
+    /**
+     * Gets the singleton instance of the TransactionManager.
+     * Initializes default tags if this is the first call.
+     * 
+     * @return The singleton TransactionManager instance
+     */
     public static TransactionManager getInstance() {
         if (INSTANCE==null) {
             INSTANCE = new TransactionManager();
@@ -67,7 +91,13 @@ final public class TransactionManager {
      */
     public void addTagToTA(Transaction ta, Tag tag) {
         ta.getTags().add(tag);
-    }
+    }    /**
+     * Add a tag to a transaction by tag name.
+     * Creates a new tag if the name doesn't exist in the registry.
+     * 
+     * @param ta Transaction to add the tag to
+     * @param tagStr Tag name
+     */
     public void addTagToTA(Transaction ta, String tagStr) {
         if(tagRegistry.get(tagStr) != null) {
             addTagToTA(ta, tagRegistry.get(tagStr));
@@ -88,7 +118,12 @@ final public class TransactionManager {
         if(ta.getTags().contains(tag)) {
             ta.getTags().remove(tag);
         }
-    }
+    }    /**
+     * Remove a tag from a transaction by tag name.
+     * 
+     * @param ta Transaction to remove the tag from
+     * @param tagStr Tag name to remove
+     */
     public void removeTagFromTA(Transaction ta, String tagStr) {
         if(tagRegistry.get(tagStr) != null) {
             removeTagFromTA(ta, tagRegistry.get(tagStr));
@@ -98,6 +133,12 @@ final public class TransactionManager {
     // Query methods
     // 查询方法
 
+    /**
+     * Gets a tag by name, creating a new one if it doesn't exist.
+     * 
+     * @param tagStr Tag name to retrieve
+     * @return The existing or newly created tag
+     */
     public Tag getTag(String tagStr) {
         Tag t = tagRegistry.get(tagStr);
         if(t==null){
@@ -107,8 +148,12 @@ final public class TransactionManager {
         }
         else return t;
 
-    }
-
+    }    /**
+     * Gets a set of tags from a set of tag names.
+     * 
+     * @param tagStrs Set of tag names to retrieve
+     * @return Set of corresponding Tag objects
+     */
     public Set<Tag> getTags(Set<String> tagStrs) {
         Set<Tag> result = new HashSet<Tag>();
         for(String tagStr:tagStrs) {
@@ -120,10 +165,23 @@ final public class TransactionManager {
         return result;
     }
 
+    /**
+     * Gets all tags associated with a transaction.
+     * 
+     * @param ta Transaction to query
+     * @return Set of tags associated with the transaction
+     */
     public Set<Tag> getTagsForTransaction(Transaction ta) {
         return ta.getTags();
     }
 
+    /**
+     * Filters transactions by tag.
+     * 
+     * @param tag Tag to filter by
+     * @param tas Set of transactions to filter
+     * @return Subset of transactions that have the specified tag
+     */
     public Set<Transaction> getTransactionByTag(Tag tag, Set<Transaction> tas) {
         if(tag==null)return null;
         Set<Transaction> result = new HashSet<>();
@@ -133,13 +191,24 @@ final public class TransactionManager {
             }
         }
         return result;
-    }
-
+    }    /**
+     * Filters transactions by tag name.
+     * 
+     * @param tagStr Tag name to filter by
+     * @param transactions Set of transactions to filter
+     * @return Subset of transactions that have the specified tag
+     */
     public Set<Transaction> getTransactionByTag(String tagStr, Set<Transaction> transactions) {
         return getTransactionByTag(getTag(tagStr), transactions);
-    }
-
-    // 根据tag对交易进行筛选，isUnion为真时tag之间取并集，为假时取交集
+    }    /**
+     * Filters transactions by multiple tags, applying either union or intersection logic.
+     * 
+     * @param tags Set of tags to filter by
+     * @param transactions Set of transactions to filter
+     * @param isUnion If true, returns transactions with ANY of the tags (union);
+     *                if false, returns transactions with ALL of the tags (intersection)
+     * @return Filtered set of transactions
+     */
     public Set<Transaction> getTransactionsByTags(Set<Tag> tags, Set<Transaction> transactions, boolean isUnion) {
         Set<Transaction> result = new HashSet<Transaction>();
 
@@ -157,6 +226,15 @@ final public class TransactionManager {
         return result;
     }
 
+    /**
+     * Calculates the total amount of transactions that match the specified criteria.
+     * 
+     * @param transactions Set of transactions to consider
+     * @param tags Set of tags to filter by (union logic)
+     * @param startdatetime Start date-time for the time range filter
+     * @param enddatetime End date-time for the time range filter
+     * @return Total amount in cents
+     */
     public int calculateAmount(Set<Transaction> transactions, Set<Tag> tags, String startdatetime, String enddatetime) {
         Set<Transaction> tas = getTransactionsByTags(tags, transactions, true);
         Set<Transaction> filtered = new HashSet<>();

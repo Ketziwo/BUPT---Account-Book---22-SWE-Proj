@@ -10,12 +10,31 @@ import java.util.List;
 import java.util.Scanner;
 import com.google.gson.Gson;
 
-public class DeepSeekClient {
-
+/**
+ * Client for interacting with the DeepSeek AI API.
+ * This class provides methods to send prompts to the DeepSeek language model
+ * and process the responses. It is used for AI-assisted features such as
+ * budget recommendations and transaction categorization.
+ * 
+ * The client handles all HTTP communication with the DeepSeek API,
+ * including authentication, request formatting, and response parsing.
+ * 
+ * @author BUPT Account Book Team
+ * @version 1.0
+ */
+public class DeepSeekClient {    /**
+     * The base URL for the DeepSeek API.
+     */
     private static final String API_URL = "https://api.deepseek.com/chat/completions";
-    private static final String API_KEY = "sk-bba8b78128c64ee89b871bf584a14ef6"; 
-
-    // 内部类定义请求/响应结构
+    
+    /**
+     * The API key for authenticating with the DeepSeek service.
+     */
+    private static final String API_KEY = "sk-bba8b78128c64ee89b871bf584a14ef6";// 内部类定义请求/响应结构
+    /**
+     * Represents a message in the chat API format.
+     * Each message has a role (system, user, or assistant) and content.
+     */
     static class Message {
         private String role;
         private String content;
@@ -28,10 +47,10 @@ public class DeepSeekClient {
         public String getContent() {
             return content;
         }
-    }
-
-    /**
-     * 请求体的数据内部结构，用于构建请求 JSON
+    }    /**
+     * Represents the request data structure for the DeepSeek Chat API.
+     * This class encapsulates all parameters needed for making a request,
+     * including the model name, messages, temperature, and token limit.
      */
     static class ChatRequest {
         private String model;
@@ -45,11 +64,10 @@ public class DeepSeekClient {
             this.temperature = temperature;
             this.max_tokens = max_tokens;
         }
-    }
-
-    /**
-     * 按着响应的JSON格式来设计响应体
-     * 用来封装响应体字符串
+    }    /**
+     * Represents the response from the DeepSeek Chat API.
+     * This class parses the JSON response into a structured object
+     * containing the generated messages.
      */
     static class ChatResponse {
         private List<Choice> choices;
@@ -58,6 +76,10 @@ public class DeepSeekClient {
             return choices;
         }
 
+        /**
+         * Represents a single response choice from the API.
+         * Each choice contains a message with the generated content.
+         */
         static class Choice {
             private Message message;
 
@@ -65,8 +87,14 @@ public class DeepSeekClient {
                 return message;
             }
         }
-    }
-
+    }    /**
+     * Sends a request to the DeepSeek API and processes the response.
+     * This method handles the HTTP communication, JSON serialization/deserialization,
+     * and error handling for API requests.
+     * 
+     * @param requestBody The request data to send to the API
+     * @return The generated text response, or an error message if the request fails
+     */
     private static String sendRequest(ChatRequest requestBody) {
         HttpClient client = HttpClient.newHttpClient();
         Gson gson = new Gson();
@@ -105,7 +133,14 @@ public class DeepSeekClient {
             return "请求异常: " + e.getMessage();
         }
     }
-    
+      /**
+     * Sends a prompt to the DeepSeek AI and returns the generated response.
+     * This is the main method used by the application to interact with the AI service.
+     * 
+     * @param content The prompt or question to send to the AI
+     * @param max_tokens The maximum number of tokens (words) to generate in the response
+     * @return The AI-generated text response
+     */
     public static String getAnswer(String content, int max_tokens) {
         // 创建消息列表
         List<Message> messages = new ArrayList<>();
