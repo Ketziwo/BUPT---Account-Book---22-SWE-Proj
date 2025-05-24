@@ -1,19 +1,18 @@
 // ManagerPanel.java
 package cn.edu.bupt.view;
 
-import cn.edu.bupt.model.Transaction;
-import cn.edu.bupt.model.TransactionManager;
+import cn.edu.bupt.model.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class ManagerPanel extends JPanel {
     private static final String[] COLUMN_NAMES = {
-        "Transaction ID", "Amount", "Datetime", 
-        "Created At", "Modified At", "Description", "Tags"
+        "ID", "Amount", "Datetime", "Created At", "Description", "Tags"
     };
     
     private final DefaultTableModel tableModel = new DefaultTableModel(COLUMN_NAMES, 0);
@@ -22,8 +21,10 @@ public class ManagerPanel extends JPanel {
 
     public ManagerPanel() {
         initUI();
-        initData();
-        initEventListeners();
+        resetTable();
+
+        //启动table监听
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     // 初始化界面方法
@@ -34,43 +35,34 @@ public class ManagerPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
 
-        JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
-        actionPanel.add(createActionButton("刷新", this::resetTable));
-        actionPanel.add(createActionButton("修改", this::editSelectedRow));
-        actionPanel.add(createActionButton("筛选", this::showFilterDialog));
+        JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
+
+        // 添加按钮
+        JButton addButton = new JButton("添加/修改");
+        addButton.addActionListener(e -> showTransactionDialog());
+        toolBar.add(addButton);
+        
+        // 刷新按钮
+        JButton refreshButton = new JButton("刷新");
+        refreshButton.addActionListener(e -> resetTable());
+        toolBar.add(refreshButton);
+
+        // 刷新按钮
+        JButton FilterButton = new JButton("筛选");
+        FilterButton.addActionListener(e -> showFilterDialog());
+        toolBar.add(FilterButton);
 
         add(scrollPane, BorderLayout.CENTER);
-        add(actionPanel, BorderLayout.SOUTH);
+        add(toolBar, BorderLayout.SOUTH);
     }
 
-    // 数据初始化方法
-    private void initData() {
-        refreshDataSnapshot();
-        reloadTableData();
-    }
-
-    // 事件监听初始化
-    private void initEventListeners() {
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    }
-
-    // 按钮创建方法
-    private JButton createActionButton(String text, Runnable action) {
-        JButton button = new JButton(text);
-        button.addActionListener(e -> action.run());
-        return button;
-    }
-
-    // 数据刷新方法
-    private void refreshDataSnapshot() {
+    // 表格重置方法
+    private void resetTable() {
+        // 刷新数据
         dataSnapshot.clear();
-        dataSnapshot.addAll(
-            TransactionManager.getInstance().currentUser.getTransactions()
-        );
-    }
+        dataSnapshot.addAll(TransactionManager.getInstance().currentUser.getTransactions());
 
-    // 表格数据重载
-    private void reloadTableData() {
+        // 重载表格数据
         tableModel.setRowCount(0);
         dataSnapshot.forEach(transaction -> 
             tableModel.addRow(createTableRow(transaction))
@@ -79,16 +71,25 @@ public class ManagerPanel extends JPanel {
 
     // 创建表格行数据
     private Object[] createTableRow(Transaction t) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        String amount = df.format(new BigDecimal(t.getAmount()).divide(new BigDecimal(100))).toString();
+
+        TransactionManager tm = TransactionManager.getInstance();
+
+        List<String> tagNames = new ArrayList<>();
+        for (Tag tag : t.getTags()) {
+            if(tag == Tag.EXPENSE || tag == Tag.INCOME)continue;
+            tagNames.add(tag.getName());
+        }
+        String DIYtags = String.join("|", tagNames);
+
         return new Object[]{
             t.getTransaction_id(),
-            t.getAmount() / 100.0, // 分转元
+            amount,
             t.getDatetime(),
             t.getCreateTime(),
-            t.getModifiedTime(),
             t.getDescription(),
-            String.join("|", t.getTags().stream()
-                .map(tag -> tag.getName())
-                .toArray(String[]::new))
+            DIYtags
         };
     }
 
@@ -130,30 +131,22 @@ public class ManagerPanel extends JPanel {
         return minValid && maxValid;
     }
 
-    // 表格重置方法
-    private void resetTable() {
-        refreshDataSnapshot();
-        reloadTableData();
-    }
-
     // 编辑功能相关方法
-    private void editSelectedRow() {
+    private void showTransactionDialog() {
         int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            showWarning("请先选择要修改的记录");
-            return;
-        }
 
-        String transactionId = (String) tableModel.getValueAt(selectedRow, 0);
-        Transaction transaction = findTransactionById(transactionId);
-        
-        if (transaction != null) {
-            new EditDialog(
-                (Frame) SwingUtilities.getWindowAncestor(this),
-                transaction,
-                updated -> handleUpdateResult(updated, selectedRow)
-            ).setVisible(true);
+        if (selectedRow == -1) {
+            TransactionDialog dialog = new TransactionDialog((Frame) SwingUtilities.getWindowAncestor(this));
+            dialog.setVisible(true);
         }
+        else {
+            String transactionId = (String) tableModel.getValueAt(selectedRow, 0);
+            Transaction transaction = findTransactionById(transactionId);
+            if (transaction == null)return;
+            TransactionDialog dialog = new TransactionDialog((Frame) SwingUtilities.getWindowAncestor(this), transaction);
+            dialog.setVisible(true);
+        }
+        resetTable();
     }
 
     private Transaction findTransactionById(String id) {
@@ -189,13 +182,4 @@ public class ManagerPanel extends JPanel {
         tableModel.setValueAt(updated.getDescription(), row, 5);
     }
 
-    // 工具方法
-    private void showWarning(String message) {
-        JOptionPane.showMessageDialog(
-            this,
-            message,
-            "操作提示",
-            JOptionPane.WARNING_MESSAGE
-        );
-    }
 }

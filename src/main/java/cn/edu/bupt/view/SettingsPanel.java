@@ -17,12 +17,19 @@ public class SettingsPanel extends JPanel {
         // 创建按钮并设置居中
         JButton switchAccountButton = createStyledButton("切换账号");
         JButton importWeChatButton = createStyledButton("导入微信CSV");
+        JButton importWeChatAIButton = createStyledButton("导入微信CSV(AI)");
+        JButton BudgetAIAdvisorButton = createStyledButton("AI预算分析师");
+
 
         // 添加按钮间的间距
         add(Box.createVerticalGlue());
         add(switchAccountButton);
         add(Box.createRigidArea(new Dimension(0, 15)));
         add(importWeChatButton);
+        add(Box.createRigidArea(new Dimension(0, 15)));
+        add(importWeChatAIButton);
+        add(Box.createRigidArea(new Dimension(0, 15)));
+        add(BudgetAIAdvisorButton);
         add(Box.createVerticalGlue());
 
         // 切换账号按钮事件处理
@@ -80,7 +87,9 @@ public class SettingsPanel extends JPanel {
         });
 
         // 导入微信按钮事件处理
-        importWeChatButton.addActionListener(e -> WeChatParser.readWECHATfile("data/微信支付账单(20250203-20250303)——【解压密码可在微信支付公众号查看】.csv"));
+        importWeChatButton.addActionListener(e -> WeChatParser.readWECHATfile("data/微信支付账单(20250501-20250510).csv"));
+        importWeChatAIButton.addActionListener(e -> WeChatParser.readWECHATfileByAI("data/微信支付账单(20250501-20250510).csv"));
+        BudgetAIAdvisorButton.addActionListener(e -> AIAdvisor.getBudgetAdvise(TransactionManager.getInstance().currentUser));
     }
 
     private JButton createStyledButton(String text) {
