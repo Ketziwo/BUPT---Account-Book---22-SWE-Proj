@@ -7,8 +7,21 @@ import cn.edu.bupt.model.TransactionManager;
 import cn.edu.bupt.model.User;
 import cn.edu.bupt.view.MainFrame;
 
+/**
+ * Main application class for the Smart Bill Management System.
+ * This class serves as the entry point for the application.
+ */
 public class App {
+    /** Synchronization object for managing application lifecycle */
     public static Object lock = new Object();
+    
+    /**
+     * Main method to start the application.
+     * Initializes data from CSV files, sets the default user,
+     * launches the UI, and waits for application termination.
+     * 
+     * @param args Command line arguments (not used)
+     */
     public static void main(String[] args) {
         // 从csv中读取
         CsvTransactionDao.readAllCSV();

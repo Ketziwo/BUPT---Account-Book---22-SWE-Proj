@@ -5,12 +5,28 @@ import cn.edu.bupt.model.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Data Access Object for CSV file operations in the account book system.
+ * This class provides methods to read from and write to CSV files for
+ * storing transactions, budgets, and user data.
+ * 
+ * The class handles all persistence operations including loading data at
+ * application startup and saving data when changes are made.
+ * 
+ * @author BUPT Account Book Team
+ * @version 1.0
+ */
 public final class CsvTransactionDao {
 	// private static File file = new File("data/Transactions.csv");
 
 	public CsvTransactionDao() {
 	}
-
+	/**
+	 * Reads all CSV files for the application.
+	 * This method loads all users from the allUsers.csv file and then
+	 * reads their respective transaction and budget files.
+	 * It should be called at application startup to initialize the data.
+	 */
 	public static void readAllCSV() {
 		File allUsers = new File("data/allUsers.csv");
 		Set<User> users = readUsersFromCSV(allUsers);
@@ -23,7 +39,12 @@ public final class CsvTransactionDao {
 			readBudgetsFromCSV(Budgetfile, user);
 		}
 	}
-
+	/**
+	 * Updates all CSV files with the current data in memory.
+	 * This method writes all users to the allUsers.csv file and then
+	 * updates their respective transaction and budget files.
+	 * It should be called whenever data changes need to be persisted.
+	 */
 	public static void updateAllCSV() {
 		File allUsers = new File("data/allUsers.csv");
 		try{
@@ -47,7 +68,13 @@ public final class CsvTransactionDao {
 			userbw.close();
 		} catch(Exception e){}
 	}
-
+	/**
+	 * Reads a CSV file and returns its contents as a single string.
+	 * This is useful for processing the file content with AI services.
+	 * 
+	 * @param file The CSV file to read
+	 * @return A string containing the entire file content, or null if an error occurs
+	 */
 	public static String readCSVtoString(File file) {
 		try {
 			FileReader filereader = new FileReader(file);
@@ -62,7 +89,16 @@ public final class CsvTransactionDao {
 			return result;
 		} catch(Exception e) {return null;}
 	}
-
+	/**
+	 * Reads a CSV file and parses it into an array of string arrays.
+	 * Each inner array represents a row in the CSV file, with elements
+	 * corresponding to comma-separated values.
+	 * 
+	 * The method uses a regex pattern to handle commas within quoted fields correctly.
+	 * 
+	 * @param file The CSV file to parse
+	 * @return An ArrayList of string arrays representing the CSV data
+	 */
 	public static ArrayList<String[]> readCSV(File file) {
 		try {
 			ArrayList<String[]> data = new ArrayList<>();
@@ -82,7 +118,16 @@ public final class CsvTransactionDao {
 			return null;
 		}
 	}
-
+	/**
+	 * Parses a CSV string into an array of string arrays.
+	 * This is particularly useful when processing CSV data from an external source
+	 * or from AI-generated content.
+	 * 
+	 * The method handles quoted fields and trims whitespace from each field.
+	 * 
+	 * @param csvString The CSV content as a string
+	 * @return An ArrayList of string arrays representing the CSV data
+	 */
 	public static ArrayList<String[]> readCSV(String csvString) {
         ArrayList<String[]> result = new ArrayList<>();
         
@@ -116,7 +161,16 @@ public final class CsvTransactionDao {
         
         return result;
     }
-
+	/**
+	 * Reads user data from a CSV file and creates User objects.
+	 * The expected CSV format is username,password on each line.
+	 * 
+	 * The method handles the special case of the "default" user.
+	 * All users are added to the TransactionManager's user registry.
+	 * 
+	 * @param file The CSV file containing user data
+	 * @return A Set of User objects created from the file
+	 */
 	public static Set<User> readUsersFromCSV(File file) {
 		Set<User> users = new HashSet<>();
 		List<String[]> csv = readCSV(file); // 假设该方法正确读取文件所有行
@@ -137,7 +191,16 @@ public final class CsvTransactionDao {
 		
 		return users;
 	}
-
+	/**
+	 * Parses transaction data from a CSV structure and creates Transaction objects.
+	 * The method expects a specific CSV format with transaction details including
+	 * ID, amount, dates, description, and tags.
+	 * 
+	 * The first row (header) is skipped during processing.
+	 * 
+	 * @param csv A List of string arrays containing transaction data
+	 * @param user The user to associate with the transactions
+	 */
 	public static void readTransactionsFromCSV(List<String[]> csv, User user) {
 		csv.remove(0);
 		for (String[] parts:csv) { // Skip the header

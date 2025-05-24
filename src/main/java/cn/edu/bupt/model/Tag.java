@@ -4,15 +4,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Tag
- * A class representing transaction tags.
- * 表示交易标签的类。
+ * The Tag class represents categories for transactions in the account book system.
+ * Tags are used to categorize transactions for filtering, reporting, and budgeting purposes.
+ * Each tag has a unique name and is managed by the TransactionManager.
+ * 
+ * The class provides predefined tags for common expense and income categories,
+ * as well as methods for creating custom tags.
+ * 
+ * @author BUPT Account Book Team
+ * @version 1.0
  */
-public class Tag {
-
+public class Tag {    /**
+     * Reference to the TransactionManager singleton for tag registration.
+     */
     private static TransactionManager TM = TransactionManager.getInstance();
 
+    /**
+     * The unique name of this tag. This value is immutable after creation.
+     */
     private final String name;   
+    
+    /**
+     * Creates a new tag with the specified name.
+     * Tags are automatically registered with the TransactionManager.
+     * 
+     * @param name The unique name for this tag
+     * @throws IllegalArgumentException If a tag with the same name already exists
+     */
     public Tag(String name) {
         // 直接检查tagRegistry中是否已存在该名称的标签
         if(TM.tagRegistry.containsKey(name)) {
@@ -23,9 +41,12 @@ public class Tag {
         TM.tagRegistry.put(name, this);
     }
 
-    public String getName() { return name; }
-
-    @Override
+    /**
+     * Gets the name of this tag.
+     * 
+     * @return The tag name
+     */
+    public String getName() { return name; }    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         // if (o instanceof Tag) return name.equals(((Tag) o).name);
@@ -38,6 +59,12 @@ public class Tag {
         return this.getName(); // 假设Tag有getName()方法
     }
 
+    /**
+     * Gets a default tag by its mapped label.
+     * 
+     * @param s The label to look up
+     * @return The corresponding tag, or UNKNOWN if not found
+     */
     public static Tag getDefaultTag(String s) {
         for(Tag key: LABEL_MAP.keySet()){
             if(Tag.LABEL_MAP.get(key).equals(s)){
@@ -45,11 +72,19 @@ public class Tag {
             }
         }
         return UNKNOWN;
-    }
-
+    }    /**
+     * Default tag for general expenses.
+     */
     static public Tag EXPENSE = new Tag("__EXPENSE__");
 
+    /**
+     * Default tag for car-related expenses.
+     */
     static public Tag EXPENSE_CAR = new Tag("__EXPENSE_CAR__");
+    
+    /**
+     * Default tag for child-related expenses.
+     */
     static public Tag EXPENSE_CHILD = new Tag("__EXPENSE_CHILD__");
     static public Tag EXPENSE_CLOTH = new Tag("__EXPENSE_CLOTH__");
     static public Tag EXPENSE_DEVICE = new Tag("__EXPENSE_DEVICE__");
@@ -76,11 +111,14 @@ public class Tag {
     static public Tag INCOME_SALARY = new Tag("__INCOME_SALARY__");
     static public Tag INCOME_STOCK = new Tag("__INCOME_STOCK__");
     static public Tag INCOME_OTHERS = new Tag("__INCOME_OTHERS__");
-    static public Tag UNKNOWN = new Tag("__UNKNOWN__");
-
+    static public Tag UNKNOWN = new Tag("__UNKNOWN__");    
+    /**
+     * Mapping between internal tag objects and their display labels.
+     * Used for UI display and parsing from external sources.
+     */
     public static final Map<Tag,String> LABEL_MAP = new HashMap<>();
     static {
-        // 支出分类（与Tag定义完全匹配）
+        // Expense categories (matching Tag definitions)
         LABEL_MAP.put(Tag.EXPENSE_CAR, "car");
         LABEL_MAP.put(Tag.EXPENSE_CHILD, "child");
         LABEL_MAP.put(Tag.EXPENSE_CLOTH, "cloth");
